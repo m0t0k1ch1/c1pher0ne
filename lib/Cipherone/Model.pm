@@ -2,7 +2,7 @@ package Cipherone::Model;
 use Mouse;
 
 with (
-    'Cipherone::Role::Singleton',
+    'Cipherone::Util::Role::Singleton',
 );
 
 __PACKAGE__->meta->make_immutable;

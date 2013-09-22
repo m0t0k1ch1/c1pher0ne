@@ -2,7 +2,7 @@ package Cipherone::Schema;
 use Mouse;
 
 with (
-    'Cipherone::Role::Singleton',
+    'Cipherone::Util::Role::Singleton',
 );
 
 use DBI;
