@@ -50,6 +50,14 @@ $teng->do(q{
         id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
         country_id INT UNSIGNED NOT NULL,
         media_type_id INT UNSIGNED NOT NULL,
+        created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+});
+
+$teng->do(q{
+    CREATE TABLE media_ranking_detail (
+        id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+        media_ranking_id INT UNSIGNED NOT NULL,
         media_category_id INT UNSIGNED NOT NULL,
         rank SMALLINT UNSIGNED NOT NULL,
         im_id BIGINT UNSIGNED NOT NULL,
@@ -57,7 +65,6 @@ $teng->do(q{
         artist TEXT NOT NULL,
         url TEXT NOT NULL,
         image_url TEXT NOT NULL,
-        release_date DATETIME NOT NULL,
-        created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        release_date DATETIME NOT NULL
     )
 });
