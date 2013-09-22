@@ -3,7 +3,7 @@ use Mouse;
 extends 'Cipherone::Schema';
 
 has table => (
-    is      => 'rw',
+    is      => 'ro',
     default => 'media_ranking'
 );
 
