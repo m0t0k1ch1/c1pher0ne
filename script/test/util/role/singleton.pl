@@ -11,8 +11,8 @@ my $cipherone = Cipherone->new;
 say $cipherone->schema;
 say $cipherone->schema;
 
-say $cipherone->schema('Country');
-say $cipherone->schema('Country');
+say $cipherone->schema('Adjective');
+say $cipherone->schema('Adjective');
 
 say '';
 

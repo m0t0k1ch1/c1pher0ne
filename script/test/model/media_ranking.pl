@@ -8,14 +8,14 @@ use Data::Dumper;
 
 my $cipherone = Cipherone->new;
 
-my $music_ranking_ja = $cipherone->model('MediaRanking')->get('topsongs', 'jp', 1);
-warn Dumper $music_ranking_ja;
+my $media_types = $cipherone->master_data('media_type');
+my $countries   = $cipherone->master_data('country');
+my $limit       = 1;
 
-my $music_ranking_us = $cipherone->model('MediaRanking')->get('topsongs', 'us', 1);
-warn Dumper $music_ranking_us;
-
-my $movie_ranking_ja = $cipherone->model('MediaRanking')->get('topmovies', 'ja', 1);
-warn Dumper $movie_ranking_ja;
-
-my $movie_ranking_us = $cipherone->model('MediaRanking')->get('topmovies', 'us', 1);
-warn Dumper $movie_ranking_us;
+for my $media_type (@{ $media_types }) {
+    for my $country (@{ $countries }) {
+        my $music_ranking
+            = $cipherone->model('MediaRanking')->get($media_type->{name}, $country->{name}, 1);
+        warn Dumper $music_ranking;
+    }
+}

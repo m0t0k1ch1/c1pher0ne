@@ -8,10 +8,8 @@ use Data::Dumper;
 
 my $cipherone = Cipherone->new;
 
-my $row;
-
-$row = $cipherone->schema('Country')->search_by_name('jp');
-warn Dumper $row->get_columns;
-
-$row = $cipherone->schema('Country')->search_by_name('us');
-warn Dumper $row->get_columns;
+my $countries = $cipherone->master_data('country');
+for my $country (@{ $countries }) {
+    my $row = $cipherone->schema('Country')->search_by_name($country->{name});
+    warn Dumper $row->get_columns;
+}
