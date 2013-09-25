@@ -13,7 +13,7 @@ has sources => (
 sub _build_sources {
     my $self = shift;
 
-    my $trend_sources = $self->config->{master_data}->{trend_source};
+    my $trend_sources = $self->master_data('trend_source');
 
     my %sources;
     for my $trend_source (@{ $trend_sources }) {

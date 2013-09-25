@@ -8,4 +8,10 @@ has _config => (
     },
 );
 
+sub master_data {
+    my ($self, $table) = @_;
+
+    $self->_config->{master_data}->{$table};
+}
+
 1;
