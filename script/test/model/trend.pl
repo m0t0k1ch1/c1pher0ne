@@ -7,14 +7,11 @@ use feature 'say';
 
 use Cipherone;
 
-use Data::Dumper;
-
 my $cipherone = Cipherone->new;
 
-my $trend = $cipherone->model('Trend');
+my $trend         = $cipherone->model('Trend');
+my $trend_sources = $cipherone->config->{master_data}->{trend_source};
 
-$trend->set_source('Twitter');
-say $_ for @{ $trend->get_trends };
-
-$trend->set_source('Kizasi');
-say $_ for @{ $trend->get_trends };
+for my $trend_source (@{ $trend_sources }) {
+    say $_ for @{ $trend->get_trends($trend_source->{id}) };
+}

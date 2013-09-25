@@ -5,24 +5,36 @@ extends 'Cipherone::Model';
 use Cipherone::Model::Trend::Source::Kizasi;
 use Cipherone::Model::Trend::Source::Twitter;
 
-has source => (
-    is      => 'rw',
-    does    => 'Cipherone::Model::Trend::Role::Source',
-    handles => {
-        get_trends => 'trends',
-    },
+has sources => (
+    is         => 'rw',
+    lazy_build => 1,
 );
+
+sub _build_sources {
+    my $self = shift;
+
+    my $trend_sources = $self->config->{master_data}->{trend_source};
+
+    my %sources;
+    for my $trend_source (@{ $trend_sources }) {
+        my $source_name
+            = 'Cipherone::Model::Trend::Source::' . $trend_source->{name};
+
+        $sources{$trend_source->{id}}
+            = $source_name->instance(config => $self->config);
+    }
+
+    $self->sources(\%sources);
+}
 
 __PACKAGE__->meta->make_immutable;
 
 no Mouse;
 
-sub set_source {
-    my ($self, $source) = @_;
+sub get_trends {
+    my ($self, $trend_source_id) = @_;
 
-    my $source_name = "Cipherone::Model::Trend::Source::${source}";
-
-    $self->source($source_name->instance(config => $self->config));
+    $self->sources->{$trend_source_id}->trends;
 }
 
 1;
