@@ -3,7 +3,7 @@ use Mouse;
 
 with (
     'Cipherone::Role::Config',
-    'Cipherone::Util::Role::Singleton',
+    'Cipherone::Role::Singleton',
 );
 
 use DBI;

@@ -1,4 +1,4 @@
-package Cipherone::Util::Role::Singleton;
+package Cipherone::Role::Singleton;
 use Mouse::Role;
 
 sub instance {
