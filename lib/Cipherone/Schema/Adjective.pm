@@ -23,7 +23,7 @@ sub random {
     my $id  = int(rand($self->count)) + 1;
     my $row = $self->teng->single($self->table, {id => $id});
 
-    $row->get_column('body');
+    $row->body;
 }
 
 1;
