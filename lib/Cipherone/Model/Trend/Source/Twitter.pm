@@ -9,11 +9,7 @@ sub trends {
     $woe_id //= $self->config->{twitter}->{default_woe_id};
 
     my $result = $self->twitter->trends_place($woe_id);
-
-    my @trends;
-    for my $trend (@{ $result->[0]->{trends} }) {
-        push @trends, $trend->{name};
-    }
+    my @trends = map { $_->{name} } @{ $result->[0]->{trends} };
 
     \@trends;
 }
