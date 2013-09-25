@@ -1,9 +1,7 @@
 package Cipherone::Schema;
 use Mouse;
 
-with (
-    'Cipherone::Util::Role::Singleton',
-);
+with 'Cipherone::Util::Role::Singleton';
 
 use DBI;
 use Teng;
