@@ -1,6 +1,6 @@
 package Cipherone::Model::Trend::Role::Source;
-use Mouse::ROle;
+use Mouse::Role;
 
-use 
+requires 'trends';
 
 1;
