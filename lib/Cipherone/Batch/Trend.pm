@@ -18,7 +18,7 @@ sub register {
 
     my $teng = $self->schema->teng;
 
-    my $trend_source_id = $trend_source->get_column('id');
+    my $trend_source_id = $trend_source->id;
     my $results         = $self->model('Trend')->get($trend_source_id);
 
     my $trend = $teng->insert(trend => {
