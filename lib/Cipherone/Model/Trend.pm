@@ -31,7 +31,7 @@ __PACKAGE__->meta->make_immutable;
 
 no Mouse;
 
-sub get_trends {
+sub get {
     my ($self, $trend_source_id) = @_;
 
     $self->sources->{$trend_source_id}->trends;

@@ -14,42 +14,45 @@ no Mouse;
 sub register {
     my ($self, $media_type_name, $country_name, $limit) = @_;
 
-    my $media_type = $self->schema('MediaType')->search_by_name($media_type_name);
-    die 'invalid media_type!' unless $media_type;
+    my $media_type = $self->schema('MediaType')->search_by_name($media_type_name)
+        // die 'invalid media_type!';
 
-    my $country = $self->schema('Country')->search_by_name($country_name);
-    die 'invalid country!' unless $country;
+    my $country = $self->schema('Country')->search_by_name($country_name)
+        // die 'invalid country!';
 
-    die 'no limit!' unless $limit;
+    die 'no limit!' unless defined $limit;
 
-    my $medias = $self->model('MediaRanking')->get($media_type_name, $country_name, $limit);
     my $teng   = $self->schema->teng;
 
+    my $results = $self->model('MediaRanking')->get($media_type_name, $country_name, $limit);
+
     my $media_ranking = $teng->insert(media_ranking => {
-        country_id    => $country->get_column('id'),
-        media_type_id => $media_type->get_column('id'),
+        country_id    => $country->id,
+        media_type_id => $media_type->id,
     });
 
-    for my $media (@{ $medias }) {
-        my $media_category = $self->schema('MediaCategory')->search_by_im_id($media->{category}->{im_id});
+    for my $result (@{ $results }) {
+        my $media_category
+            = $self->schema('MediaCategory')->search_by_im_id($result->{category}->{im_id});
+
         unless ($media_category) {
             $media_category = $teng->insert(media_category => {
-                im_id => $media->{category}->{im_id},
-                name  => $media->{category}->{name},
-                url   => $media->{category}->{url},
+                im_id => $result->{category}->{im_id},
+                name  => $result->{category}->{name},
+                url   => $result->{category}->{url},
             });
         }
 
         $teng->insert(media_ranking_detail => {
             media_ranking_id  => $media_ranking->id,
-            media_category_id => $media_category->get_column('id'),
-            rank              => $media->{rank},
-            im_id             => $media->{im_id},
-            title             => $media->{title},
-            artist            => $media->{artist},
-            url               => $media->{url},
-            image_url         => $media->{image_url},
-            release_date      => $media->{release_date},
+            media_category_id => $media_category->id,
+            rank              => $result->{rank},
+            im_id             => $result->{im_id},
+            title             => $result->{title},
+            artist            => $result->{artist},
+            url               => $result->{url},
+            image_url         => $result->{image_url},
+            release_date      => $result->{release_date},
         });
     }
 }
