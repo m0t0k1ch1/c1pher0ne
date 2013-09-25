@@ -4,6 +4,10 @@ extends 'Cipherone::Model';
 
 with 'Cipherone::Model::Trend::Role::Source';
 
+__PACKAGE__->meta->make_immutable;
+
+no Mouse;
+
 sub trends {
     my ($self, $woe_id) = @_;
     $woe_id //= $self->config->{twitter}->{default_woe_id};
@@ -13,9 +17,5 @@ sub trends {
 
     \@trends;
 }
-
-__PACKAGE__->meta->make_immutable;
-
-no Mouse;
 
 1;
