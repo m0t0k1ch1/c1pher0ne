@@ -2,15 +2,9 @@ package Cipherone;
 use Mouse;
 
 with (
-    'Cipherone::Role::Schema',
+    'Cipherone::Role::Config',
     'Cipherone::Role::Model',
-);
-
-has config => (
-    is      => 'rw',
-    default => sub {
-        do 'config.pl' || die $!;
-    },
+    'Cipherone::Role::Schema',
 );
 
 __PACKAGE__->meta->make_immutable;

@@ -1,6 +1,11 @@
 package Cipherone::Batch::MediaRanking;
 use Mouse;
-extends 'Cipherone';
+
+with (
+    'Cipherone::Role::Config',
+    'Cipherone::Role::Model',
+    'Cipherone::Role::Schema',
+);
 
 __PACKAGE__->meta->make_immutable;
 
