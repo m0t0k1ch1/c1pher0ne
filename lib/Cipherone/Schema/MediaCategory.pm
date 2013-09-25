@@ -2,7 +2,7 @@ package Cipherone::Schema::MediaCategory;
 use Mouse;
 extends 'Cipherone::Schema';
 
-has table => (
+has _table => (
     is      => 'ro',
     default => 'media_category',
 );
@@ -14,7 +14,7 @@ no Mouse;
 sub search_by_im_id {
     my ($self, $im_id) = @_;
 
-    $self->teng->single($self->table, {im_id => $im_id});
+    $self->teng->single($self->_table, {im_id => $im_id});
 }
 
 1;

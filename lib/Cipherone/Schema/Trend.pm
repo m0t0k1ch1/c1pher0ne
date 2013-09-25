@@ -2,7 +2,7 @@ package Cipherone::Schema::Trend;
 use Mouse;
 extends 'Cipherone::Schema';
 
-has table => (
+has _table => (
     is      => 'ro',
     default => 'trend',
 );

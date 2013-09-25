@@ -2,7 +2,7 @@ package Cipherone::Schema::MediaRankingDetail;
 use Mouse;
 extends 'Cipherone::Schema';
 
-has table => (
+has _table => (
     is      => 'ro',
     default => 'media_ranking_detail'
 );

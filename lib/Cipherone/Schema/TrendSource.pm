@@ -2,7 +2,7 @@ package Cipherone::Schema::TrendSource;
 use Mouse;
 extends 'Cipherone::Schema';
 
-has table => (
+has _table => (
     is      => 'ro',
     default => 'trend_source',
 );
@@ -14,7 +14,7 @@ no Mouse;
 sub search_by_name {
     my ($self, $name) = @_;
 
-    $self->teng->single($self->table, {name => $name});
+    $self->teng->single($self->_table, {name => $name});
 }
 
 1;
