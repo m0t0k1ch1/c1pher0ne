@@ -1,16 +1,14 @@
 package Cipherone::Schema;
 use Mouse;
 
-with 'Cipherone::Util::Role::Singleton';
+with (
+    'Cipherone::Role::Config',
+    'Cipherone::Util::Role::Singleton',
+);
 
 use DBI;
 use Teng;
 use Teng::Schema::Loader;
-
-has config => (
-    is       => 'ro',
-    required => 1,
-);
 
 has teng => (
     is         => 'rw',
@@ -20,7 +18,7 @@ has teng => (
 sub _build_teng {
     my $self = shift;
 
-    my $mysql_config = $self->config->{mysql};
+    my $mysql_config = $self->_config->{mysql};
 
     my $dbh = DBI->connect(
         'dbi:mysql:' . $mysql_config->{db_name},

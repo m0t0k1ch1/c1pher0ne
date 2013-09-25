@@ -21,7 +21,7 @@ sub _build_sources {
             = 'Cipherone::Model::Trend::Source::' . $trend_source->{name};
 
         $sources{$trend_source->{id}}
-            = $source_name->instance(config => $self->config);
+            = $source_name->instance(_config => $self->_config);
     }
 
     $self->sources(\%sources);

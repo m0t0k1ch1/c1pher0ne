@@ -2,7 +2,6 @@ package Cipherone::Batch::Trend;
 use Mouse;
 
 with (
-    'Cipherone::Role::Config',
     'Cipherone::Role::Model',
     'Cipherone::Role::Schema',
 );

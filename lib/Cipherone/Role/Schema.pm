@@ -20,7 +20,7 @@ sub schema {
         $schema_name .= "::${schema}";
     }
 
-    $schema_name->instance(config => $self->config);
+    $schema_name->instance;
 }
 
 1;

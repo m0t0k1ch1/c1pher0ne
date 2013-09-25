@@ -13,7 +13,7 @@ sub model {
         $model_name .= "::${model}";
     }
 
-    $model_name->instance(config => $self->config);
+    $model_name->instance;
 }
 
 1;

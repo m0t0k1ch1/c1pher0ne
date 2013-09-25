@@ -1,28 +1,22 @@
 package Cipherone::Model;
 use Mouse;
 
-with 'Cipherone::Util::Role::Singleton';
+with (
+    'Cipherone::Role::Config',
+    'Cipherone::Util::Role::Singleton',
+);
 
 use Net::Twitter;
-
-has config => (
-    is       => 'ro',
-    required => 1,
-);
 
 has twitter => (
     is         => 'rw',
     lazy_build => 1,
 );
 
-__PACKAGE__->meta->make_immutable;
-
-no Mouse;
-
 sub _build_twitter {
     my $self = shift;
 
-    my $twitter_config = $self->config->{twitter};
+    my $twitter_config = $self->_config->{twitter};
 
     Net::Twitter->new(
         traits              => [qw/API::RESTv1_1/],
@@ -32,5 +26,9 @@ sub _build_twitter {
         access_token_secret => $twitter_config->{access_token_secret},
     );
 }
+
+__PACKAGE__->meta->make_immutable;
+
+no Mouse;
 
 1;

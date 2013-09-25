@@ -1,7 +1,7 @@
 package Cipherone::Role::Config;
 use Mouse::Role;
 
-has config => (
+has _config => (
     is      => 'ro',
     default => sub {
         do 'config.pl' || die $!;
