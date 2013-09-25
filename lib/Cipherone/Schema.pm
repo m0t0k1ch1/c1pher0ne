@@ -8,7 +8,7 @@ use Teng;
 use Teng::Schema::Loader;
 
 has config => (
-    is       => 'rw',
+    is       => 'ro',
     required => 1,
 );
 

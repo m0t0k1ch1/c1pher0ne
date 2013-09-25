@@ -6,7 +6,7 @@ with 'Cipherone::Util::Role::Singleton';
 use Net::Twitter;
 
 has config => (
-    is       => 'rw',
+    is       => 'ro',
     required => 1,
 );
 
