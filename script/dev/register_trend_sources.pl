@@ -8,7 +8,7 @@ use Cipherone;
 my $cipherone = Cipherone->new;
 my $teng      = $cipherone->schema->teng;
 
-my $trend_sources = $cipherone->config->{master_data}->{trend_source};
+my $trend_sources = $cipherone->master_data('trend_source');
 for my $trend_source (@{ $trend_sources }) {
     $teng->insert(trend_source => {
         id   => $trend_source->{id},

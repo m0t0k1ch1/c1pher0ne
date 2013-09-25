@@ -8,7 +8,7 @@ use Cipherone;
 my $cipherone = Cipherone->new;
 my $teng      = $cipherone->schema->teng;
 
-my $media_types = $cipherone->config->{master_data}->{media_type};
+my $media_types = $cipherone->master_data('media_type');
 for my $media_type (@{ $media_types }) {
     $teng->insert(media_type => {
         id   => $media_type->{id},
