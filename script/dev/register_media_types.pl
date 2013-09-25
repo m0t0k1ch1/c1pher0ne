@@ -8,10 +8,10 @@ use Cipherone;
 my $cipherone = Cipherone->new;
 my $teng      = $cipherone->schema->teng;
 
-my @media_types = ('topsongs', 'topmovies');
-
-for my $media_type (@media_types) {
+my $media_types = $cipherone->config->{master_data}->{media_type};
+for my $media_type (@{ $media_types }) {
     $teng->insert(media_type => {
-        name => $media_type,
+        id   => $media_type->{id},
+        name => $media_type->{name},
     });
 }

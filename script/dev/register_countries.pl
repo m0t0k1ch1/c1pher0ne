@@ -8,10 +8,10 @@ use Cipherone;
 my $cipherone = Cipherone->new;
 my $teng      = $cipherone->schema->teng;
 
-my @countries = ('jp', 'us');
-
-for my $country (@countries) {
+my $countries = $cipherone->config->{master_data}->{country};
+for my $country (@{ $countries }) {
     $teng->insert(country => {
-        name => $country,
+        id   => $country->{id},
+        name => $country->{name},
     });
 }

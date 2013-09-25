@@ -8,10 +8,10 @@ use Cipherone;
 my $cipherone = Cipherone->new;
 my $teng      = $cipherone->schema->teng;
 
-my @trend_sources = ('twitter', 'kizasi');
-
-for my $trend_source (@trend_sources) {
+my $trend_sources = $cipherone->config->{master_data}->{trend_source};
+for my $trend_source (@{ $trend_sources }) {
     $teng->insert(trend_source => {
-        name => $trend_source,
+        id   => $trend_source->{id},
+        name => $trend_source->{name},
     });
 }
