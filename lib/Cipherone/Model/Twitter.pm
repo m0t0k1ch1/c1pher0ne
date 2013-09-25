@@ -1,5 +1,6 @@
-package Cipherone::Role::Twitter;
-use Mouse::Role;
+package Cipherone::Model::Twitter;
+use Mouse;
+extends 'Cipherone::Model';
 
 use Net::Twitter;
 
@@ -7,6 +8,10 @@ has twitter => (
     is         => 'rw',
     lazy_build => 1,
 );
+
+__PACKAGE__->meta->make_immutable;
+
+no Mouse;
 
 sub _build_twitter {
     my $self = shift;

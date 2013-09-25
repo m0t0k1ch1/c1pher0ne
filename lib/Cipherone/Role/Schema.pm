@@ -16,7 +16,7 @@ sub schema {
         $schema_name .= "::${schema}";
     }
 
-    $schema_name->instance(config => $self->config->{mysql});
+    $schema_name->instance(config => $self->config);
 }
 
 1;

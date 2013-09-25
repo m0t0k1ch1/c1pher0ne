@@ -3,6 +3,7 @@ use Mouse::Role;
 
 use Cipherone::Model;
 use Cipherone::Model::MediaRanking;
+use Cipherone::Model::Twitter;
 
 sub model {
     my ($self, $model) = @_;
@@ -12,7 +13,7 @@ sub model {
         $model_name .= "::${model}";
     }
 
-    $model_name->instance;
+    $model_name->instance(config => $self->config);
 }
 
 1;

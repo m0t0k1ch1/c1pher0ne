@@ -22,10 +22,12 @@ has teng => (
 sub _build_teng {
     my $self = shift;
 
+    my $mysql_config = $self->config->{mysql};
+
     my $dbh = DBI->connect(
-        'dbi:mysql:' . $self->config->{db_name},
-        $self->config->{user},
-        $self->config->{password},
+        'dbi:mysql:' . $mysql_config->{db_name},
+        $mysql_config->{user},
+        $mysql_config->{password},
         {
             'mysql_enable_utf8' => 1,
         },

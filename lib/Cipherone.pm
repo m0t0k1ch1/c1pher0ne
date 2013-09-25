@@ -4,7 +4,6 @@ use Mouse;
 with (
     'Cipherone::Role::Schema',
     'Cipherone::Role::Model',
-    'Cipherone::Role::Twitter',
 );
 
 use Cipherone::Schema;

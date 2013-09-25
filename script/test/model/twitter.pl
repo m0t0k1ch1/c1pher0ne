@@ -11,14 +11,14 @@ use Data::Dumper;
 use Encode;
 
 my $cipherone = Cipherone->new;
-my $twitter   = $cipherone->twitter;
+my $twitter   = $cipherone->model('Twitter')->twitter;
 
 test_status($twitter);
 
 sub test_status {
     my $twitter = shift;
 
-    $twitter->update('hello world');
+    $twitter->update('good afternoon, everyone');
 }
 
 sub test_trends_available {
