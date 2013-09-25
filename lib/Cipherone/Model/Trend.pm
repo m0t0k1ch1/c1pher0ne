@@ -6,8 +6,11 @@ use Cipherone::Model::Trend::Source::Kizasi;
 use Cipherone::Model::Trend::Source::Twitter;
 
 has source => (
-    is   => 'rw',
-    does => 'Cipherone::Model::Trend::Role::Source',
+    is      => 'rw',
+    does    => 'Cipherone::Model::Trend::Role::Source',
+    handles => {
+        get_trends => 'trends',
+    },
 );
 
 __PACKAGE__->meta->make_immutable;
@@ -20,12 +23,6 @@ sub set_source {
     my $source_name = "Cipherone::Model::Trend::Source::${source}";
 
     $self->source($source_name->instance(config => $self->config));
-}
-
-sub get_trends {
-    my $self = shift;
-
-    $self->source->trends;
 }
 
 1;
