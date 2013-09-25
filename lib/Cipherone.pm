@@ -6,8 +6,6 @@ with (
     'Cipherone::Role::Model',
 );
 
-use Cipherone::Schema;
-
 has config => (
     is      => 'rw',
     default => sub {
