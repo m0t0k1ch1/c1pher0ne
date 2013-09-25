@@ -1,8 +1,12 @@
 package Cipherone::Model::Trend::Source::Twitter;
 use Mouse;
-extends 'Cipherone::Model';
+extends 'Cipherone::Model::Trend::Source';
 
-with 'Cipherone::Model::Trend::Role::Source';
+with (
+    'Cipherone::Role::Config',
+    'Cipherone::Role::Twitter',
+    'Cipherone::Model::Trend::Role::Source',
+);
 
 __PACKAGE__->meta->make_immutable;
 
