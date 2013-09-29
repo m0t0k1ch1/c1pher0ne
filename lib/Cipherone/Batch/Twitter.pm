@@ -1,8 +1,13 @@
 package Cipherone::Batch::Twitter;
 use Mouse;
 
+use utf8;
+
 with (
+    'Cipherone::Role::Bitly',
     'Cipherone::Role::Config',
+    'Cipherone::Role::Model',
+    'Cipherone::Role::Schema',
     'Cipherone::Role::Twitter',
 );
 
@@ -36,6 +41,22 @@ sub change_image_off {
     my $self = shift;
 
     $self->twitter->update_profile_image([$self->image_off]);
+}
+
+sub tweet_trend {
+    my $self = shift;
+
+    my $trend_id_max = $self->schema('Trend')->max_id;
+    my $trend_detail = $self->schema('TrendDetail')->random($trend_id_max);
+    my $adjective    = $self->schema('Adjective')->random;
+
+    my $body = $trend_detail->body . 'って、' . $adjective->body . 'よね';
+
+    my $url         = 'http://google.com/search?q=' . $trend_detail->body;
+    my $url_shorten = $self->bitly->shorten($url);
+
+    $self->tweet($body . ' ' . $url_shorten->short_url);
+    $trend_detail->update({is_tweet => 1});
 }
 
 1;
