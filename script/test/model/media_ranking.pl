@@ -14,8 +14,8 @@ my $limit       = 1;
 
 for my $media_type (@{ $media_types }) {
     for my $country (@{ $countries }) {
-        my $music_ranking
+        my $media_ranking
             = $cipherone->model('MediaRanking')->get($media_type->{name}, $country->{name}, 1);
-        warn Dumper $music_ranking;
+        warn Dumper $media_ranking;
     }
 }
