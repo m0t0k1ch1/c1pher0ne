@@ -8,10 +8,17 @@ has _config => (
     },
 );
 
+has _master_data => (
+    is      => 'ro',
+    default => sub {
+        do 'master_data.pl' || die $!;
+    },
+);
+
 sub master_data {
     my ($self, $table) = @_;
 
-    $self->_config->{master_data}->{$table};
+    $self->_master_data->{$table};
 }
 
 1;
