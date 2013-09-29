@@ -9,4 +9,4 @@ use Cipherone;
 my $cipherone = Cipherone->new;
 
 say $cipherone->schema('Adjective')->count;
-say $cipherone->schema('Adjective')->random;
+say $cipherone->schema('Adjective')->random->body;

@@ -20,10 +20,9 @@ sub count {
 sub random {
     my $self = shift;
 
-    my $id  = int(rand($self->count)) + 1;
-    my $row = $self->teng->single($self->_table, {id => $id});
+    my $id = int(rand($self->count)) + 1;
 
-    $row->body;
+    $self->teng->single($self->_table, {id => $id});
 }
 
 1;
