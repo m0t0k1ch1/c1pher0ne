@@ -8,4 +8,4 @@ use Cipherone::Batch::Twitter;
 my $batch = Cipherone::Batch::Twitter->new;
 
 $batch->change_image_on;
-$batch->twitter->update('おはよう');
+$batch->tweet('おはよう');

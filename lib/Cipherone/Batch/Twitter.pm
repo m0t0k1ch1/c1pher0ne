@@ -20,6 +20,12 @@ __PACKAGE__->meta->make_immutable;
 
 no Mouse;
 
+sub tweet {
+    my ($self, $body) = @_;
+
+    $self->twitter->update($body);
+}
+
 sub change_image_on {
     my $self = shift;
 
