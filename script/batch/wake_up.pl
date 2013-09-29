@@ -6,4 +6,6 @@ use FindBin::libs;
 use Cipherone::Batch::Twitter;
 
 my $batch = Cipherone::Batch::Twitter->new;
-$batch->change_image_off;
+
+$batch->change_image_on;
+$batch->twitter->update('おはよう');
