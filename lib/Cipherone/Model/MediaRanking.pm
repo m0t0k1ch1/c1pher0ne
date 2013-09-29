@@ -24,7 +24,7 @@ sub _get_entry_summary {
     } elsif ($media_type eq 'topmovies') {
         $url = $entry->{'link'}->[0]->{attributes}->{href};
     } elsif ($media_type eq 'topfreeapplications') {
-        $url = $entry->{'link'};
+        $url = $entry->{'link'}->{attributes}->{href};
     }
 
     {
