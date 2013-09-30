@@ -3,6 +3,10 @@ use Mouse;
 
 use utf8;
 
+use Encode;
+use File::Basename;
+use LWP::UserAgent;
+
 with (
     'Cipherone::Role::Bitly',
     'Cipherone::Role::Config',
@@ -46,8 +50,8 @@ sub change_image_off {
 sub tweet_trend {
     my $self = shift;
 
-    my $trend_id_max = $self->schema('Trend')->max_id;
-    my $trend_detail = $self->schema('TrendDetail')->random($trend_id_max);
+    my $trend_id     = $self->schema('Trend')->max_id;
+    my $trend_detail = $self->schema('TrendDetail')->random($trend_id);
     my $adjective    = $self->schema('Adjective')->random;
 
     my $body = $trend_detail->body . 'って、' . $adjective->body . 'よね';
@@ -57,6 +61,36 @@ sub tweet_trend {
 
     $self->tweet($body . ' ' . $url_shorten->short_url);
     $trend_detail->update({is_tweet => 1});
+}
+
+sub tweet_media_ranking {
+    my ($self, $media_type_name) = @_;
+
+    my $media_type           = $self->schema('MediaType')->search_by_name($media_type_name);
+    my $media_ranking_id     = $self->schema('MediaRanking')->max_id($media_type->id);
+    my $media_ranking_detail = $self->schema('MediaRankingDetail')->random($media_ranking_id);
+    my $media_category_id    = $media_ranking_detail->media_category_id;
+    my $media_category       = $self->schema('MediaCategory')->search_by_id($media_category_id);
+
+    my $body = '【' . $media_category->name . '】'
+        . $media_ranking_detail->title
+        . '（' . $media_ranking_detail->artist . '）'
+        . '、はやってるらしいよ';
+
+    my $url_shorten = $self->bitly->shorten($media_ranking_detail->url);
+
+    my $user_agent = LWP::UserAgent->new;
+    my $res        = $user_agent->get($media_ranking_detail->image_url);
+
+    $self->twitter->update_with_media(
+        encode('utf8', $body . ' ' . $url_shorten->short_url),
+        [
+            undef,
+            basename($media_ranking_detail->image_url),
+            Content => $res->content,
+        ],
+    );
+    $media_ranking_detail->update({is_tweet => 1});
 }
 
 1;
