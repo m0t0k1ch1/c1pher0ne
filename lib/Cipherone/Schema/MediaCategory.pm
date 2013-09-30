@@ -11,6 +11,12 @@ __PACKAGE__->meta->make_immutable;
 
 no Mouse;
 
+sub search_by_id {
+    my ($self, $id) = @_;
+
+    $self->teng->single($self->_table, {id => $id});
+}
+
 sub search_by_im_id {
     my ($self, $im_id) = @_;
 
