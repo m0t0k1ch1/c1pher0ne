@@ -1,12 +1,6 @@
 package Cipherone::Batch::Twitter;
 use Mouse;
 
-use utf8;
-
-use Encode;
-use File::Basename;
-use LWP::UserAgent;
-
 with (
     'Cipherone::Role::Bitly',
     'Cipherone::Role::Config',
@@ -14,6 +8,12 @@ with (
     'Cipherone::Role::Schema',
     'Cipherone::Role::Twitter',
 );
+
+use utf8;
+
+use Encode;
+use File::Basename;
+use LWP::UserAgent;
 
 has image_on => (
     is      => 'ro',
@@ -91,6 +91,19 @@ sub tweet_media_ranking {
         ],
     );
     $media_ranking_detail->update({is_tweet => 1});
+}
+
+sub tweet_poem {
+    my $self = shift;
+
+    my $poem = $self->model('Poem');
+
+    my @sentences;
+    for my $length (5, 7, 5, 7, 7) {
+        push @sentences, $poem->get_hanamogera($length);
+    }
+
+    $self->tweet(join('　', @sentences));
 }
 
 1;
