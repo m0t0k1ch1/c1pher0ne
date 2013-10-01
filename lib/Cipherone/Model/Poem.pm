@@ -80,11 +80,12 @@ sub _convert_sentence {
 sub _convert_segment {
     my ($self, $segment) = @_;
 
-    my $candidates = $segment->{CandidateList}->{Candidate};
-
     if ($self->convert_weight->next) {
+        my $candidates = $segment->{CandidateList}->{Candidate};
+
         return ref $candidates eq 'ARRAY' ? $candidates->[0] : $candidates;
-    } else {
+    }
+    else {
         return $segment->{SegmentText};
     }
 }
