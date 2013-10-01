@@ -1,5 +1,6 @@
 package Cipherone::Model::MediaRanking;
 use Mouse;
+
 extends 'Cipherone::Model';
 
 use JSON qw/decode_json/;

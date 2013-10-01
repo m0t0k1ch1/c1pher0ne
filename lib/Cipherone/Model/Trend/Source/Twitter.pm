@@ -1,7 +1,7 @@
 package Cipherone::Model::Trend::Source::Twitter;
 use Mouse;
-extends 'Cipherone::Model::Trend::Source';
 
+extends 'Cipherone::Model::Trend::Source';
 with (
     'Cipherone::Role::Config',
     'Cipherone::Role::Twitter',

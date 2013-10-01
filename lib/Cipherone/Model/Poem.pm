@@ -1,7 +1,7 @@
 package Cipherone::Model::Poem;
 use Mouse;
-extends 'Cipherone::Model';
 
+extends 'Cipherone::Model';
 with 'Cipherone::Role::Config';
 
 use utf8;

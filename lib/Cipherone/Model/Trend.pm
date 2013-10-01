@@ -1,5 +1,6 @@
 package Cipherone::Model::Trend;
 use Mouse;
+
 extends 'Cipherone::Model';
 
 use Cipherone::Model::Trend::Source::Kizasi;

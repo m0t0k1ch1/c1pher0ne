@@ -1,7 +1,7 @@
 package Cipherone::Model::Trend::Source::Kizasi;
 use Mouse;
-extends 'Cipherone::Model::Trend::Source';
 
+extends 'Cipherone::Model::Trend::Source';
 with 'Cipherone::Model::Trend::Role::Source';
 
 use LWP::UserAgent;
