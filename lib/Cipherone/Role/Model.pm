@@ -3,6 +3,7 @@ use Mouse::Role;
 
 use Cipherone::Model;
 use Cipherone::Model::MediaRanking;
+use Cipherone::Model::Poem;
 use Cipherone::Model::Trend;
 
 sub model {
