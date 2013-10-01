@@ -1,5 +1,6 @@
 package Cipherone::Schema::TrendSource;
 use Mouse;
+
 extends 'Cipherone::Schema';
 
 has _table => (

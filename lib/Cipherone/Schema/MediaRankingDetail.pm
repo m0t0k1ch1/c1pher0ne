@@ -1,5 +1,6 @@
 package Cipherone::Schema::MediaRankingDetail;
 use Mouse;
+
 extends 'Cipherone::Schema';
 
 has _table => (
