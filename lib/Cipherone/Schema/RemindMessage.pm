@@ -23,7 +23,7 @@ sub search_by_status_id {
 sub have_to_tweet_now_list {
     my $self = shift;
 
-    my $table = $self->_table;
+    my $table = $self->table;
 
     my @result = $self->teng->search_by_sql(qq/
         SELECT *
