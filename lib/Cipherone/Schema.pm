@@ -6,6 +6,7 @@ with (
     'Cipherone::Role::Singleton',
 );
 
+use DateTime;
 use DBI;
 use Teng;
 use Teng::Schema::Loader;
