@@ -21,7 +21,7 @@ sub count {
 sub random {
     my $self = shift;
 
-    my $id = int(rand($self->count)) + 1;
+    my $id = (int rand $self->count) + 1;
 
     $self->teng->single($self->_table, {id => $id});
 }
