@@ -1,10 +1,15 @@
 package Cipherone::Model::Trend;
-use Mouse;
 
+use Mouse;
 extends 'Cipherone::Model';
 
-use Cipherone::Model::Trend::Source::Kizasi;
-use Cipherone::Model::Trend::Source::Twitter;
+my @sources = glob 'lib/Cipherone/Model/Trend/Source/*';
+for my $source (@sources) {
+    my $source_name = 'Cipherone::Model::Trend::Source::' . fileparse($source, '.pm');
+    eval "use ${source_name}";
+}
+
+use File::Basename;
 
 has _sources => (
     is         => 'rw',
@@ -18,8 +23,7 @@ sub _build__sources {
 
     my %sources;
     for my $trend_source (@{ $trend_sources }) {
-        my $source_name
-            = 'Cipherone::Model::Trend::Source::' . $trend_source->{name};
+        my $source_name = 'Cipherone::Model::Trend::Source::' . $trend_source->{name};
 
         $sources{$trend_source->{id}} = $source_name->instance;
     }
