@@ -119,6 +119,11 @@ $teng->do(q/
 /);
 
 $teng->do(q/
+    CREATE INDEX remind_message_remind_date_and_is_tweet
+    ON remind_message (remind_date, is_tweet);
+/);
+
+$teng->do(q/
     CREATE INDEX trend_detail_trend_id_and_is_tweet
     ON trend_detail (trend_id, is_tweet);
 /);
