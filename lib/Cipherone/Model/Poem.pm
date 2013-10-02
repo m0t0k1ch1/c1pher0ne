@@ -62,8 +62,10 @@ sub _convert_sentence {
 
     my $xml = XML::Simple->new;
 
-    my $url  = $self->_build_conversion_api_url($sentence);
-    my $res  = $self->user_agent->get($url);
+    my $url = $self->_build_conversion_api_url($sentence);
+    my $res = $self->user_agent->get($url);
+    die $res->status_line unless $res->is_success;
+
     my $data = $xml->XMLin($res->content);
 
     my $segments = $data->{Result}->{SegmentList}->{Segment};
@@ -93,8 +95,10 @@ sub _convert_segment {
 sub get_hanamogera {
     my ($self, $length) = @_;
 
-    my $url  = $self->_build_hanamogera_api_url($length);
-    my $res  = $self->user_agent->get($url);
+    my $url = $self->_build_hanamogera_api_url($length);
+    my $res = $self->user_agent->get($url);
+    die $res->status_line unless $res->is_success;
+
     my $data = decode_json($res->content);
 
     my $sentence = encode('utf8', $data->{hanamogera});

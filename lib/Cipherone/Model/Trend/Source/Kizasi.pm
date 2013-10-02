@@ -22,7 +22,9 @@ sub trends {
     my $user_agent = LWP::UserAgent->new;
     my $xml        = XML::Simple->new;
 
-    my $res  = $user_agent->get($self->api_url);
+    my $res = $user_agent->get($self->api_url);
+    die $res->status_line unless $res->is_success;
+
     my $data = $xml->XMLin($res->content);
 
     my @trends = map { $_->{title} } @{ $data->{channel}->{item} };
