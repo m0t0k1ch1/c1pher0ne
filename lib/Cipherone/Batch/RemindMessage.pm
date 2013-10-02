@@ -1,12 +1,7 @@
 package Cipherone::Batch::RemindMessage;
 use Mouse;
 
-with (
-    'Cipherone::Role::Config',
-    'Cipherone::Role::Model',
-    'Cipherone::Role::Schema',
-    'Cipherone::Role::Twitter',
-);
+extends 'Cipherone::Batch';
 
 use utf8;
 
@@ -16,12 +11,14 @@ use DateTime::Format::HTTP;
 sub register {
     my $self = shift;
 
-    my $twitter  = $self->twitter;
+    my $cipherone = $self->cipherone;
+
+    my $twitter  = $cipherone->twitter;
     my $mentions = $twitter->mentions;
 
     for my $mention (@{ $mentions }) {
         my $status_id = $mention->{id};
-        next if ($self->schema('RemindMessage')->search_by_status_id($status_id));
+        next if ($cipherone->schema('RemindMessage')->search_by_status_id($status_id));
 
         my @hash_tags = map { $_->{text} } @{ $mention->{entities}->{hashtags} };
 
@@ -47,15 +44,21 @@ sub register {
                     remind_date => $remind_date,
                 };
 
-                if ($remind_date > DateTime->now(time_zone => 'local')) {
-                    $body_to .= " 御意！${remind_date_string}になったらリマインドするね";
+                my $now = DateTime->now(time_zone => 'local');
+
+                if ($remind_date > $now) {
+                    if ($now->hour > 1 && $now->hour < 7) {
+                        $body_to .= " ...もー！起こさないでよ！${remind_date_string} ね！はいはい！おやすみ！";
+                    } else {
+                        $body_to .= " 御意！${remind_date_string} になったらリマインドするね";
+                    }
                     $attr->{is_tweet} = 0;
                 } else {
                     $body_to .= ' 過去には戻れないよ！現実を見て！';
                     $attr->{is_tweet} = 1;
                 }
 
-                $self->schema('RemindMessage')->insert($attr);
+                $cipherone->schema('RemindMessage')->insert($attr);
 
                 $twitter->update({
                     status                => $body_to,
