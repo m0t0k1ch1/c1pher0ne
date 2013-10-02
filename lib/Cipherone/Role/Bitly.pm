@@ -11,7 +11,7 @@ has bitly => (
 sub _build_bitly {
     my $self = shift;
 
-    my $bitly_config = $self->_config->{bitly};
+    my $bitly_config = $self->config('bitly');
 
     WebService::Bitly->new(
         user_name    => $bitly_config->{user_name},

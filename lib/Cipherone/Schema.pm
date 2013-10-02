@@ -19,7 +19,7 @@ has teng => (
 sub _build_teng {
     my $self = shift;
 
-    my $mysql_config = $self->_config->{mysql};
+    my $mysql_config = $self->config('mysql');
 
     my $dbh = DBI->connect(
         'dbi:mysql:' . $mysql_config->{db_name},

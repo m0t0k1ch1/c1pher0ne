@@ -12,14 +12,14 @@ use JSON qw/decode_json/;
 use LWP::UserAgent;
 use XML::Simple;
 
-has user_agent => (
+has _user_agent => (
     is      => 'rw',
     default => sub {
         LWP::UserAgent->new;
     },
 );
 
-has convert_weight => (
+has _convert_weight => (
     is      => 'rw',
     default => sub {
         Data::WeightedRoundRobin->new([
@@ -46,7 +46,7 @@ no Mouse;
 sub _build_conversion_api_url {
     my ($self, $sentence) = @_;
 
-    my $application_id = $self->_config->{yahoo}->{application_id};
+    my $application_id = $self->config('yahoo')->{application_id};
 
     $self->conversion_api_url . "?appid=${application_id}&sentence=${sentence}";
 }
@@ -63,7 +63,7 @@ sub _convert_sentence {
     my $xml = XML::Simple->new;
 
     my $url = $self->_build_conversion_api_url($sentence);
-    my $res = $self->user_agent->get($url);
+    my $res = $self->_user_agent->get($url);
     die $res->status_line unless $res->is_success;
 
     my $data = $xml->XMLin($res->content);
@@ -82,7 +82,7 @@ sub _convert_sentence {
 sub _convert_segment {
     my ($self, $segment) = @_;
 
-    if ($self->convert_weight->next) {
+    if ($self->_convert_weight->next) {
         my $candidates = $segment->{CandidateList}->{Candidate};
 
         ref $candidates eq 'ARRAY' ? $candidates->[0] : $candidates;
@@ -96,7 +96,7 @@ sub get_hanamogera {
     my ($self, $length) = @_;
 
     my $url = $self->_build_hanamogera_api_url($length);
-    my $res = $self->user_agent->get($url);
+    my $res = $self->_user_agent->get($url);
     die $res->status_line unless $res->is_success;
 
     my $data = decode_json($res->content);

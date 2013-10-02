@@ -15,6 +15,12 @@ has _master_data => (
     },
 );
 
+sub config {
+    my ($self, $key) = @_;
+
+    $self->_config->{$key};
+}
+
 sub master_data {
     my ($self, $table) = @_;
 

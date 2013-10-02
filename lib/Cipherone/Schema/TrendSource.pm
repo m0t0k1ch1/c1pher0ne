@@ -3,7 +3,7 @@ use Mouse;
 
 extends 'Cipherone::Schema';
 
-has _table => (
+has table => (
     is      => 'ro',
     default => 'trend_source',
 );

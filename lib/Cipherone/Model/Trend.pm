@@ -6,12 +6,12 @@ extends 'Cipherone::Model';
 use Cipherone::Model::Trend::Source::Kizasi;
 use Cipherone::Model::Trend::Source::Twitter;
 
-has sources => (
+has _sources => (
     is         => 'rw',
     lazy_build => 1,
 );
 
-sub _build_sources {
+sub _build__sources {
     my $self = shift;
 
     my $trend_sources = $self->master_data('trend_source');
@@ -24,7 +24,7 @@ sub _build_sources {
         $sources{$trend_source->{id}} = $source_name->instance;
     }
 
-    $self->sources(\%sources);
+    $self->_sources(\%sources);
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -34,7 +34,7 @@ no Mouse;
 sub get {
     my ($self, $trend_source_id) = @_;
 
-    $self->sources->{$trend_source_id}->trends;
+    $self->_sources->{$trend_source_id}->trends;
 }
 
 1;

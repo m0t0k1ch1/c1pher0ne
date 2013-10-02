@@ -11,7 +11,7 @@ has twitter => (
 sub _build_twitter {
     my $self = shift;
 
-    my $twitter_config = $self->_config->{twitter};
+    my $twitter_config = $self->config('twitter');
 
     Net::Twitter->new(
         traits              => [qw/API::RESTv1_1/],
