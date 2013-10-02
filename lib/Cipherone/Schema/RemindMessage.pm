@@ -15,7 +15,7 @@ no Mouse;
 sub search_by_status_id {
     my ($self, $status_id) = @_;
 
-    $self->teng->single($self->_table, {
+    $self->teng->single($self->table, {
         status_id => $status_id,
     });
 }

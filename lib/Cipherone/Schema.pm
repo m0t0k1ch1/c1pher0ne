@@ -47,7 +47,7 @@ no Mouse;
 sub insert {
     my ($self, $attr) = @_;
 
-    $self->teng->insert($self->_table => $attr);
+    $self->teng->insert($self->table => $attr);
 }
 
 1;

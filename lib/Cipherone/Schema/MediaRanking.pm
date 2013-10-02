@@ -17,7 +17,7 @@ no Mouse;
 sub max_id {
     my ($self, $media_type_id) = @_;
 
-    my $itr = $self->teng->search($self->_table, {
+    my $itr = $self->teng->search($self->table, {
         media_type_id => $media_type_id,
     }, {
         order_by => 'id DESC',

@@ -15,7 +15,7 @@ no Mouse;
 sub count {
     my $self = shift;
 
-    $self->teng->count($self->_table, '*');
+    $self->teng->count($self->table, '*');
 }
 
 sub random {
@@ -23,7 +23,7 @@ sub random {
 
     my $id = (int rand $self->count) + 1;
 
-    $self->teng->single($self->_table, {
+    $self->teng->single($self->table, {
         id => $id,
     });
 }

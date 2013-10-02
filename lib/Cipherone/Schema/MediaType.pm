@@ -15,7 +15,7 @@ no Mouse;
 sub search_by_name {
     my ($self, $name) = @_;
 
-    $self->teng->single($self->_table, {
+    $self->teng->single($self->table, {
         name => $name,
     });
 }

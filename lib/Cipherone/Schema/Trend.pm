@@ -15,7 +15,7 @@ no Mouse;
 sub max_id {
     my $self = shift;
 
-    my $itr = $self->teng->search($self->_table, {}, {
+    my $itr = $self->teng->search($self->table, {}, {
         order_by => 'id DESC',
     });
 

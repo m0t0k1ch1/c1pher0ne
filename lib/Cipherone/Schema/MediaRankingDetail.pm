@@ -15,7 +15,7 @@ no Mouse;
 sub random {
     my ($self, $media_ranking_id) = @_;
 
-    my $itr = $self->teng->search($self->_table, {
+    my $itr = $self->teng->search($self->table, {
         media_ranking_id => $media_ranking_id,
         is_tweet         => 0,
     }, {

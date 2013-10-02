@@ -15,7 +15,7 @@ no Mouse;
 sub random {
     my ($self, $trend_id) = @_;
 
-    my $itr = $self->teng->search($self->_table, {
+    my $itr = $self->teng->search($self->table, {
         trend_id => $trend_id,
         is_tweet => 0,
     }, {
