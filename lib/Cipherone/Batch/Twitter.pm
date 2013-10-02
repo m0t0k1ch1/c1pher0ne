@@ -59,7 +59,7 @@ sub tweet_trend {
     my $url         = 'http://google.com/search?q=' . $trend_detail->body;
     my $url_shorten = $self->bitly->shorten($url);
 
-    $self->tweet($body . ' ' . $url_shorten->short_url);
+    $self->twitter->update($body . ' ' . $url_shorten->short_url);
     $trend_detail->update({is_tweet => 1});
 }
 

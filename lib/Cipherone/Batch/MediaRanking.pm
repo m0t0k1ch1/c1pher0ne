@@ -21,11 +21,9 @@ sub register {
 
     die 'no limit!' unless defined $limit;
 
-    my $teng   = $self->schema->teng;
-
     my $results = $self->model('MediaRanking')->get($media_type_name, $country_name, $limit);
 
-    my $media_ranking = $teng->insert(media_ranking => {
+    my $media_ranking = $self->schema('MediaRanking')->insert({
         country_id    => $country->id,
         media_type_id => $media_type->id,
     });
@@ -35,14 +33,14 @@ sub register {
             = $self->schema('MediaCategory')->search_by_im_id($result->{category}->{im_id});
 
         unless ($media_category) {
-            $media_category = $teng->insert(media_category => {
+            $media_category = $self->schema('MediaCategory')->insert({
                 im_id => $result->{category}->{im_id},
                 name  => $result->{category}->{name},
                 url   => $result->{category}->{url},
             });
         }
 
-        $teng->insert(media_ranking_detail => {
+        $self->schema('MediaRankingDetail')->insert({
             media_ranking_id  => $media_ranking->id,
             media_category_id => $media_category->id,
             rank              => $result->{rank},

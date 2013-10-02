@@ -11,12 +11,11 @@ use List::MoreUtils qw/uniq/;
 use LWP::UserAgent;
 
 my $cipherone = Cipherone->new;
-my $teng      = $cipherone->schema->teng;
 
 my @adjectives = get_adjectives();
 
 for my $adjective (@adjectives) {
-    $teng->insert(adjective => {
+    $cipherone->schema('Adjective')->insert({
         body => $adjective,
     });
 }
