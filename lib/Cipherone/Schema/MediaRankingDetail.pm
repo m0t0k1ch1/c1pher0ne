@@ -18,7 +18,9 @@ sub random {
     my $itr = $self->teng->search($self->_table, {
         media_ranking_id => $media_ranking_id,
         is_tweet         => 0,
-    }, {order_by => 'RAND()'});
+    }, {
+        order_by => 'RAND()',
+    });
 
     $itr->next;
 }

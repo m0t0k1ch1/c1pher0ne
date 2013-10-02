@@ -43,4 +43,10 @@ __PACKAGE__->meta->make_immutable;
 
 no Mouse;
 
+sub insert {
+    my ($self, $attr) = @_;
+
+    $self->teng->insert($self->_table => $attr);
+}
+
 1;

@@ -23,7 +23,9 @@ sub random {
 
     my $id = (int rand $self->count) + 1;
 
-    $self->teng->single($self->_table, {id => $id});
+    $self->teng->single($self->_table, {
+        id => $id,
+    });
 }
 
 1;

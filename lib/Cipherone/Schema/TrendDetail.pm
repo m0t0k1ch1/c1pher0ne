@@ -18,7 +18,9 @@ sub random {
     my $itr = $self->teng->search($self->_table, {
         trend_id => $trend_id,
         is_tweet => 0,
-    }, {order_by => 'RAND()'});
+    }, {
+        order_by => 'RAND()',
+    });
 
     $itr->next;
 }
