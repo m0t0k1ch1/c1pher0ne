@@ -2,9 +2,14 @@ package Cipherone::Role::Model;
 use Mouse::Role;
 
 use Cipherone::Model;
-use Cipherone::Model::MediaRanking;
-use Cipherone::Model::Poem;
-use Cipherone::Model::Trend;
+
+my @models = glob 'lib/Cipherone/Model/*';
+for my $model (@models) {
+    my $model_name = 'Cipherone::Model::' . fileparse($model, '.pm');
+    eval "use ${model_name}";
+}
+
+use File::Basename;
 
 sub model {
     my ($self, $model) = @_;

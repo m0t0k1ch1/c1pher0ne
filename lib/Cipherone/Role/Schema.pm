@@ -2,15 +2,14 @@ package Cipherone::Role::Schema;
 use Mouse::Role;
 
 use Cipherone::Schema;
-use Cipherone::Schema::Adjective;
-use Cipherone::Schema::Country;
-use Cipherone::Schema::MediaCategory;
-use Cipherone::Schema::MediaRanking;
-use Cipherone::Schema::MediaRankingDetail;
-use Cipherone::Schema::MediaType;
-use Cipherone::Schema::Trend;
-use Cipherone::Schema::TrendDetail;
-use Cipherone::Schema::TrendSource;
+
+my @schemas = glob 'lib/Cipherone/Schema/*';
+for my $schema (@schemas) {
+    my $schema_name = 'Cipherone::Schema::' . fileparse($schema, '.pm');
+    eval "use ${schema_name}";
+}
+
+use File::Basename;
 
 sub schema {
     my ($self, $schema) = @_;
