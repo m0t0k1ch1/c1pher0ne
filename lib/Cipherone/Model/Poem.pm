@@ -83,10 +83,10 @@ sub _convert_segment {
     if ($self->convert_weight->next) {
         my $candidates = $segment->{CandidateList}->{Candidate};
 
-        return ref $candidates eq 'ARRAY' ? $candidates->[0] : $candidates;
+        ref $candidates eq 'ARRAY' ? $candidates->[0] : $candidates;
     }
     else {
-        return $segment->{SegmentText};
+        $segment->{SegmentText};
     }
 }
 
