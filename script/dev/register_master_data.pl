@@ -6,4 +6,4 @@ use FindBin::libs;
 use Cipherone;
 
 my $cipherone = Cipherone->new;
-$cipherone->schema->create_tables;
+$cipherone->schema->insert_master_data;
