@@ -199,4 +199,16 @@ sub create_tables {
     /);
 }
 
+sub insert_master_data {
+    my $self = shift;
+
+    my $master_data = $self->master_data;
+
+    for my $table (keys %{ $master_data }) {
+        for my $row (@{ $master_data->{$table} }) {
+            $self->teng->insert($table => $row);
+        }
+    }
+}
+
 1;

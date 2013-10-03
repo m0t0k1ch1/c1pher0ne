@@ -19,13 +19,13 @@ has _master_data => (
 sub config {
     my ($self, $key) = @_;
 
-    $self->_config->{$key};
+    $key ? $self->_config->{$key} : $self->_config;
 }
 
 sub master_data {
     my ($self, $table) = @_;
 
-    $self->_master_data->{$table};
+    $table ? $self->_master_data->{$table} : $self->_master_data;
 }
 
 1;
