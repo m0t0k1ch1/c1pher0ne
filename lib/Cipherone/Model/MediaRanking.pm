@@ -22,9 +22,11 @@ sub _get_entry_summary {
     my $url;
     if ($media_type eq 'topsongs') {
         $url = $entry->{'im:collection'}->{link}->{attributes}->{href};
-    } elsif ($media_type eq 'topmovies') {
+    }
+    elsif ($media_type eq 'topmovies') {
         $url = $entry->{'link'}->[0]->{attributes}->{href};
-    } elsif ($media_type eq 'topfreeapplications') {
+    }
+    elsif ($media_type eq 'topfreeapplications') {
         $url = $entry->{'link'}->{attributes}->{href};
     }
 

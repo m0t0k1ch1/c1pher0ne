@@ -50,12 +50,13 @@ sub tweet_trend {
     my $trend_detail = $cipherone->schema('TrendDetail')->random($trend_id);
     my $adjective    = $cipherone->schema('Adjective')->random;
 
-    my $body = $trend_detail->body . 'って、' . $adjective->body . 'よね';
+    my $body = $cipherone->tweet_text('tweet_trend', {
+        trend     => $trend_detail->body,
+        adjective => $adjective->body,
+        url       => $cipherone->bitly->shorten('http://google.com/search?q=' . $trend_detail->body),
+    });
 
-    my $url         = 'http://google.com/search?q=' . $trend_detail->body;
-    my $url_shorten = $cipherone->bitly->shorten($url);
-
-    $cipherone->twitter->update($body . ' ' . $url_shorten->short_url);
+    $cipherone->twitter->update($body);
     $trend_detail->update({is_tweet => 1});
 }
 
@@ -70,24 +71,21 @@ sub tweet_media_ranking {
     my $media_category_id    = $media_ranking_detail->media_category_id;
     my $media_category       = $cipherone->schema('MediaCategory')->search_by_id($media_category_id);
 
-    my $body = '【' . $media_category->name . '】'
-        . $media_ranking_detail->title
-        . '（' . $media_ranking_detail->artist . '）'
-        . '、はやってるらしいよ';
-
-    my $url_shorten = $cipherone->bitly->shorten($media_ranking_detail->url);
+    my $body = $cipherone->tweet_text('tweet_media_ranking', {
+        category => $media_category->name,
+        title    => $media_ranking_detail->title,
+        artist   => $media_ranking_detail->artist,
+        url      => $cipherone->bitly->shorten($media_ranking_detail->url),
+    });
 
     my $user_agent = LWP::UserAgent->new;
     my $res        = $user_agent->get($media_ranking_detail->image_url);
 
-    $cipherone->twitter->update_with_media(
-        encode('utf8', $body . ' ' . $url_shorten->short_url),
-        [
-            undef,
-            basename($media_ranking_detail->image_url),
-            Content => $res->content,
-        ],
-    );
+    $cipherone->twitter->update_with_media(encode('utf8', $body), [
+        undef,
+        basename($media_ranking_detail->image_url),
+        Content => $res->content,
+    ]);
     $media_ranking_detail->update({is_tweet => 1});
 }
 

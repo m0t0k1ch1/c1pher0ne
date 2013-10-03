@@ -47,14 +47,17 @@ sub register {
                 my $now = DateTime->now(time_zone => 'local');
 
                 if ($remind_date > $now) {
-                    if ($now->hour > 1 && $now->hour < 7) {
-                        $body_to .= " ...もー！起こさないでよ！${remind_date_string} ね！はいはい！おやすみ！";
-                    } else {
-                        $body_to .= " 御意！${remind_date_string} になったらリマインドするね";
-                    }
+                    my $tweet_text_type =
+                        $now->hour > 1 && $now->hour < 7 ? 'register_remind_message_asleep'
+                                                         : 'register_remind_message_awake';
+
+                    $body_to .= $cipherone->tweet_text($tweet_text_type, {
+                        date => $remind_date_string,
+                    });
                     $attr->{is_tweet} = 0;
-                } else {
-                    $body_to .= ' 過去には戻れないよ！現実を見て！';
+                }
+                else {
+                    $body_to = $cipherone->tweet_text('register_remind_message_error_past');
                     $attr->{is_tweet} = 1;
                 }
 
