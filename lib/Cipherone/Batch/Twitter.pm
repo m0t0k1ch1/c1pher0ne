@@ -53,7 +53,7 @@ sub tweet_trend {
     my $body = $cipherone->tweet_text('tweet_trend', {
         trend     => $trend_detail->body,
         adjective => $adjective->body,
-        url       => $cipherone->bitly->shorten('http://google.com/search?q=' . $trend_detail->body),
+        url       => $cipherone->bitly->shorten('http://google.com/search?q=' . $trend_detail->body)->short_url,
     });
 
     $cipherone->twitter->update($body);
@@ -75,7 +75,7 @@ sub tweet_media_ranking {
         category => $media_category->name,
         title    => $media_ranking_detail->title,
         artist   => $media_ranking_detail->artist,
-        url      => $cipherone->bitly->shorten($media_ranking_detail->url),
+        url      => $cipherone->bitly->shorten($media_ranking_detail->url)->short_url,
     });
 
     my $user_agent = LWP::UserAgent->new;
