@@ -1,5 +1,6 @@
 package Cipherone::Role::Schema;
 use Mouse::Role;
+use utf8;
 
 use Cipherone::Schema;
 

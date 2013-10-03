@@ -1,9 +1,8 @@
 package Cipherone::Batch::RemindMessage;
 use Mouse;
+use utf8;
 
 extends 'Cipherone::Batch';
-
-use utf8;
 
 use DateTime;
 use DateTime::Format::HTTP;

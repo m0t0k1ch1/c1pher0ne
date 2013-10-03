@@ -1,5 +1,6 @@
 package Cipherone;
 use Mouse;
+use utf8;
 
 with (
     'Cipherone::Role::Bitly',
@@ -9,8 +10,6 @@ with (
     'Cipherone::Role::Singleton',
     'Cipherone::Role::Twitter',
 );
-
-use utf8;
 
 has _tweet_texts => (
     is      => 'rw',

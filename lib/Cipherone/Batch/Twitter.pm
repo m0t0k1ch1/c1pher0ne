@@ -1,9 +1,8 @@
 package Cipherone::Batch::Twitter;
 use Mouse;
+use utf8;
 
 extends 'Cipherone::Batch';
-
-use utf8;
 
 use Encode;
 use File::Basename;

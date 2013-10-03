@@ -1,5 +1,6 @@
 package Cipherone::Role::Config;
 use Mouse::Role;
+use utf8;
 
 has _config => (
     is      => 'ro',

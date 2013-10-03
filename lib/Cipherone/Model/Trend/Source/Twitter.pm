@@ -1,5 +1,6 @@
 package Cipherone::Model::Trend::Source::Twitter;
 use Mouse;
+use utf8;
 
 extends 'Cipherone::Model::Trend::Source';
 with (

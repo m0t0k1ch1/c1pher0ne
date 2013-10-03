@@ -1,5 +1,6 @@
 package Cipherone::Batch;
 use Mouse;
+use utf8;
 
 use Cipherone;
 

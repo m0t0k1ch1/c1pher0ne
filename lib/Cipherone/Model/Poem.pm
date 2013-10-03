@@ -1,10 +1,9 @@
 package Cipherone::Model::Poem;
 use Mouse;
+use utf8;
 
 extends 'Cipherone::Model';
 with 'Cipherone::Role::Config';
-
-use utf8;
 
 use Data::WeightedRoundRobin;
 use Encode;

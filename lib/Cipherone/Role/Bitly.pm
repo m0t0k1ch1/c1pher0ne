@@ -1,5 +1,6 @@
 package Cipherone::Role::Bitly;
 use Mouse::Role;
+use utf8;
 
 use WebService::Bitly;
 

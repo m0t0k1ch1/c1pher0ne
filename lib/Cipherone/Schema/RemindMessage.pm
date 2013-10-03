@@ -1,5 +1,6 @@
 package Cipherone::Schema::RemindMessage;
 use Mouse;
+use utf8;
 
 extends 'Cipherone::Schema';
 

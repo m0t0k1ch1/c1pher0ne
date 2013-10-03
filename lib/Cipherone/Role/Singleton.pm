@@ -1,5 +1,6 @@
 package Cipherone::Role::Singleton;
 use Mouse::Role;
+use utf8;
 
 sub instance {
     my ($self, %option) = @_;

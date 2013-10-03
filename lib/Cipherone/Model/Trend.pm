@@ -1,6 +1,7 @@
 package Cipherone::Model::Trend;
-
 use Mouse;
+use utf8;
+
 extends 'Cipherone::Model';
 
 my @sources = glob 'lib/Cipherone/Model/Trend/Source/*';

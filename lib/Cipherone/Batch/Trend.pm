@@ -1,5 +1,6 @@
 package Cipherone::Batch::Trend;
 use Mouse;
+use utf8;
 
 extends 'Cipherone::Batch';
 

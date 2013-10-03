@@ -1,5 +1,6 @@
 package Cipherone::Schema::MediaRanking;
 use Mouse;
+use utf8;
 
 extends 'Cipherone::Schema';
 

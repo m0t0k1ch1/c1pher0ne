@@ -1,5 +1,6 @@
 package Cipherone::Role::Twitter;
 use Mouse::Role;
+use utf8;
 
 use Net::Twitter;
 

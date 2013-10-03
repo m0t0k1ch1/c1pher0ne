@@ -1,5 +1,6 @@
 package Cipherone::Model::Trend::Source;
 use Mouse;
+use utf8;
 
 with 'Cipherone::Role::Singleton';
 
