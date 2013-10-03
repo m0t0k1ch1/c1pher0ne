@@ -51,13 +51,13 @@ sub register {
                         $now->hour > 1 && $now->hour < 7 ? 'register_remind_message_asleep'
                                                          : 'register_remind_message_awake';
 
-                    $body_to .= $cipherone->tweet_text($tweet_text_type, {
+                    $body_to .= ' ' . $cipherone->tweet_text($tweet_text_type, {
                         date => $remind_date_string,
                     });
                     $attr->{is_tweet} = 0;
                 }
                 else {
-                    $body_to = $cipherone->tweet_text('register_remind_message_error_past');
+                    $body_to .= ' ' . $cipherone->tweet_text('register_remind_message_error_past');
                     $attr->{is_tweet} = 1;
                 }
 
