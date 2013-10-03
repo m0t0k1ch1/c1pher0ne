@@ -12,55 +12,59 @@ use DBI;
 use Teng;
 use Teng::Schema::Loader;
 
-has dbh => (
-    is         => 'rw',
-    lazy_build => 1,
-);
-
-has teng => (
-    is         => 'rw',
-    lazy_build => 1,
-);
-
-sub _build_dbh {
-    my $self = shift;
-
-    if ($ENV{TEST_DSN}) {
-        DBI->connect($ENV{TEST_DSN});
-    }
-    else {
-        my $mysql_config = $self->config('mysql');
-        DBI->connect(
-            'dbi:mysql:' . $mysql_config->{db_name},
-            $mysql_config->{user},
-            $mysql_config->{password},
-            {
-                'mysql_enable_utf8' => 1,
-            },
-        );
-    }
-}
-
-sub _build_teng {
-    my $self = shift;
-
-    if ($ENV{TEST_DSN}) {
-        $self->create_tables;
-    }
-
-    my $teng = Teng::Schema::Loader->load(
-        dbh       => $self->dbh,
-        namespace => 'Cipherone::DB',
-    );
-
-    $teng->load_plugin('Count');
-
-    $teng;
-}
-
 __PACKAGE__->meta->make_immutable;
 
 no Mouse;
+
+our $dbh;
+our $teng;
+
+sub dbh {
+    my $self = shift;
+
+    if ($dbh) {
+        $dbh;
+    }
+    else {
+        if ($ENV{TEST_DSN}) {
+            $dbh = DBI->connect($ENV{TEST_DSN});
+        }
+        else {
+            my $mysql_config = $self->config('mysql');
+
+            $dbh = DBI->connect(
+                'dbi:mysql:' . $mysql_config->{db_name},
+                $mysql_config->{user},
+                $mysql_config->{password},
+                {
+                    'mysql_enable_utf8' => 1,
+                },
+            );
+        }
+    }
+}
+
+sub teng {
+    my $self = shift;
+
+    if ($teng) {
+        $teng;
+    }
+    else {
+        if ($ENV{TEST_DSN}) {
+            $self->create_tables;
+        }
+
+        $teng = Teng::Schema::Loader->load(
+            dbh       => $self->dbh,
+            namespace => 'Cipherone::DB',
+        );
+
+        $teng->load_plugin('Count');
+
+        $teng;
+    }
+}
 
 sub insert {
     my ($self, $attr) = @_;
