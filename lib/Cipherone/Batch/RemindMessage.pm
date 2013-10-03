@@ -25,7 +25,7 @@ sub register {
         if (grep { $_ eq 'remind' } @hash_tags) {
             my $body_from = $mention->{text};
 
-            if ($body_from =~ /(\d{4}\/\d{1,2}\/\d{1,2} \d{1,2}:\d{1,2})/) {
+            if ($body_from =~ /(\s\d{4}\/\d{1,2}\/\d{1,2} \d{1,2}:\d{1,2}$)/) {
                 my $remind_date_string = $1;
                 my $remind_date        = DateTime::Format::HTTP->parse_datetime($remind_date_string);
 
@@ -34,7 +34,7 @@ sub register {
 
                 $body_from =~ s/(?:${remind_date_string})//g;
                 $body_from =~ s/(?:${screen_name_to})//g;
-                $body_from =~ s/^ *(.*?) *$/$1/g;
+                $body_from =~ s/^\s*(.*?)\s*$/$1/g;
 
                 my $body_to = $screen_name_from;;
                 my $attr = {
