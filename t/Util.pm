@@ -11,7 +11,8 @@ use Cipherone::Test;
 use String::Random;
 
 our @EXPORT = (
-    'create_adjective',
+    'insert_master_data',
+    'insert_adjective',
 );
 
 my $cipherone = Cipherone->new;
@@ -23,7 +24,11 @@ sub _make_random_string {
     $random_maker->randregex("[A-Za-z0-9]{$length}")
 }
 
-sub create_adjective {
+sub insert_master_data {
+    $cipherone->schema->insert_master_data;
+}
+
+sub insert_adjective {
     $cipherone->schema('Adjective')->insert({
         body => _make_random_string((int rand 10) + 1),
     });

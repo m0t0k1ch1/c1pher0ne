@@ -12,18 +12,20 @@ use Test::More;
 my $row_count = 10;
 
 for (1..$row_count) {
-    create_adjective;
+    insert_adjective;
 }
 
 my $cipherone = Cipherone->new;
 my $adjective = $cipherone->schema('Adjective');
 
 subtest 'count' => sub {
-    is $adjective->count, $row_count;
+    ok my $count = $adjective->count;
+    is $count, $row_count;
 };
 
 subtest 'random' => sub {
-    isa_ok $adjective->random, 'Teng::Row';
+    ok my $row = $adjective->random;
+    isa_ok $row, 'Teng::Row';
 };
 
 done_testing;
