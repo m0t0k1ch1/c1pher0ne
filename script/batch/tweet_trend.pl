@@ -6,5 +6,4 @@ use FindBin::libs;
 use Cipherone::Batch::Twitter;
 
 my $batch = Cipherone::Batch::Twitter->new;
-
 $batch->tweet_trend;
