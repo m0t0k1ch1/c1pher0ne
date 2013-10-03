@@ -6,7 +6,6 @@ extends 'Cipherone::Model';
 with 'Cipherone::Role::Config';
 
 use Data::WeightedRoundRobin;
-use Encode;
 use JSON qw/decode_json/;
 use LWP::UserAgent;
 use XML::Simple;
@@ -98,9 +97,8 @@ sub get_hanamogera {
     my $res = $self->_user_agent->get($url);
     die $res->status_line unless $res->is_success;
 
-    my $data = decode_json($res->content);
-
-    my $sentence = encode('utf8', $data->{hanamogera});
+    my $data     = decode_json($res->content);
+    my $sentence = $data->{hanamogera};
 
     $self->_convert_sentence($sentence);
 }
