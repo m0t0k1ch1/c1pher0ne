@@ -23,12 +23,6 @@ __PACKAGE__->meta->make_immutable;
 
 no Mouse;
 
-sub tweet {
-    my ($self, $body) = @_;
-
-    $self->cipherone->twitter->update($body);
-}
-
 sub change_image_on {
     my $self = shift;
 
@@ -39,6 +33,12 @@ sub change_image_off {
     my $self = shift;
 
     $self->cipherone->twitter->update_profile_image([$self->image_off]);
+}
+
+sub tweet {
+    my ($self, $body) = @_;
+
+    $self->cipherone->twitter->update($body);
 }
 
 sub tweet_trend {
