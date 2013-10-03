@@ -17,7 +17,8 @@ my $media_type = $cipherone->schema('MediaType');
 subtest 'search_by_name' => sub {
     my $master = $cipherone->master_data('media_type')->[0];
 
-    ok my $row = $media_type->search_by_name($master->{name});
+    my $row = $media_type->search_by_name($master->{name});
+    ok $row;
     isa_ok $row, 'Teng::Row';
     is $row->id, $master->{id};
 };

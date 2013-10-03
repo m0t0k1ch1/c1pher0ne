@@ -17,7 +17,8 @@ my $country   = $cipherone->schema('Country');
 subtest 'search_by_name' => sub {
     my $master = $cipherone->master_data('country')->[0];
 
-    ok my $row = $country->search_by_name($master->{name});
+    my $row = $country->search_by_name($master->{name});
+    ok $row;
     isa_ok $row, 'Teng::Row';
     is $row->id, $master->{id};
 };

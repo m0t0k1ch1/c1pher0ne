@@ -17,7 +17,8 @@ my $trend_source = $cipherone->schema('TrendSource');
 subtest 'search_by_name' => sub {
     my $master = $cipherone->master_data('trend_source')->[0];
 
-    ok my $row = $trend_source->search_by_name($master->{name});
+    my $row = $trend_source->search_by_name($master->{name});
+    ok $row;
     isa_ok $row, 'Teng::Row';
     is $row->id, $master->{id};
 };

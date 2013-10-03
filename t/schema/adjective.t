@@ -19,12 +19,14 @@ my $cipherone = Cipherone->new;
 my $adjective = $cipherone->schema('Adjective');
 
 subtest 'count' => sub {
-    ok my $count = $adjective->count;
+    my $count = $adjective->count;
+    ok $count;
     is $count, $row_count;
 };
 
 subtest 'random' => sub {
-    ok my $row = $adjective->random;
+    my $row = $adjective->random;
+    ok $row;
     isa_ok $row, 'Teng::Row';
 };
 
