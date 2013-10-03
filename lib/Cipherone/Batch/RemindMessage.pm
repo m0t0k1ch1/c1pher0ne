@@ -7,6 +7,10 @@ extends 'Cipherone::Batch';
 use DateTime;
 use DateTime::Format::HTTP;
 
+__PACKAGE__->meta->make_immutable;
+
+no Mouse;
+
 sub register {
     my $self = shift;
 
@@ -70,9 +74,5 @@ sub register {
         }
     }
 }
-
-__PACKAGE__->meta->make_immutable;
-
-no Mouse;
 
 1;
