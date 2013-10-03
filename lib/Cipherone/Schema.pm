@@ -53,6 +53,7 @@ sub teng {
     else {
         if ($ENV{TEST_DSN}) {
             $self->create_tables;
+            $self->insert_master_data;
         }
 
         $teng = Teng::Schema::Loader->load(
