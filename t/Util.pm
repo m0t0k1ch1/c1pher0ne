@@ -25,7 +25,7 @@ sub _make_random_string {
 
 sub create_adjective {
     $cipherone->schema('Adjective')->insert({
-        body => _make_random_string(5),
+        body => _make_random_string((int rand 10) + 1),
     });
 }
 
