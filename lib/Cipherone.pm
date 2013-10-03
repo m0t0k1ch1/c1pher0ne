@@ -20,8 +20,8 @@ has _tweet_texts => (
             go_to_sleep => 'おやすみ',
             tweet_trend => '__trend__って、__adjective__よね __url__',
             tweet_media_ranking => '【__category__】__title__（__artist__）、はやってるらしいよ __url__',
-            register_remind_message_awake      => '...もー！起こさないでよ！__date__ ね！はいはい！おやすみ！',
-            register_remind_message_asleep     => '御意！__date__ になったらリマインドするね',
+            register_remind_message_awake      => '御意！__date__ になったらリマインドするね',
+            register_remind_message_asleep     => '...もー！起こさないでよ！__date__ ね！はいはい！おやすみ！',
             register_remind_message_error_past => '過去には戻れないよ！現実を見て！',
         };
     },
