@@ -66,12 +66,6 @@ sub teng {
     }
 }
 
-sub insert {
-    my ($self, $attr) = @_;
-
-    $self->teng->insert($self->table => $attr);
-}
-
 sub create_tables {
     my $self = shift;
 
@@ -209,6 +203,12 @@ sub insert_master_data {
             $self->teng->insert($table => $row);
         }
     }
+}
+
+sub insert {
+    my ($self, $attr) = @_;
+
+    $self->teng->insert($self->table => $attr);
 }
 
 1;
