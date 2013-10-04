@@ -70,12 +70,16 @@ sub tweet_media_ranking {
     my $media_category_id    = $media_ranking_detail->media_category_id;
     my $media_category       = $cipherone->schema('MediaCategory')->search_by_id($media_category_id);
 
-    my $body = $cipherone->tweet_text('tweet_media_ranking', {
-        category => $media_category->name,
-        title    => $media_ranking_detail->title,
-        artist   => $media_ranking_detail->artist,
-        url      => $cipherone->bitly->shorten($media_ranking_detail->url)->short_url,
-    });
+    my $attr = {
+        title => $media_ranking_detail->title,
+        url   => $cipherone->bitly->shorten($media_ranking_detail->url)->short_url,
+    };
+    if ($media_type_name eq 'topsongs') {
+        $attr->{artist} = $media_ranking_detail->artist;
+    }
+
+    my $tweet_text_type = "tweet_${media_type_name}";
+    my $body            = $cipherone->tweet_text($tweet_text_type, $attr);
 
     my $user_agent = LWP::UserAgent->new;
     my $res        = $user_agent->get($media_ranking_detail->image_url);
