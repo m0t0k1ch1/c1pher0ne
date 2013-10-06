@@ -6,4 +6,4 @@ use FindBin::libs;
 use Cipherone::Batch::RemindMessage;
 
 my $batch = Cipherone::Batch::RemindMessage->new;
-$batch->register;
+$batch->streaming('@c1pher0ne');
