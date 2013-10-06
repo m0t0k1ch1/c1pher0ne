@@ -5,8 +5,8 @@ use FindBin::libs;
 
 use Cipherone;
 
-my $trend_source_name = $ARGV[0];
-
 my $cipherone = Cipherone->new;
-$cipherone->batch('Trend')->register($trend_source_name);
+my $batch     = $cipherone->twitter_batch('Basic');
 
+$batch->change_image_on;
+$batch->tweet('wake_up');
