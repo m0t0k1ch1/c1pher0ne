@@ -79,7 +79,7 @@ sub _response_and_register {
 
             if ($remind_date > $now) {
                 my $tweet_text_type =
-                    $now->hour > 1 && $now->hour < 7 ? 'register_remind_message_asleep'
+                    $now->hour >= 1 && $now->hour < 7 ? 'register_remind_message_asleep'
                                                      : 'register_remind_message_awake';
 
                 $body_to .= ' ' . $cipherone->tweet_text($tweet_text_type, {
