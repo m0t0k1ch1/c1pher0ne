@@ -3,10 +3,12 @@ use warnings;
 use utf8;
 use FindBin::libs;
 
-use Cipherone::Batch::Twitter;
+use Cipherone;
 
-my $batch = Cipherone::Batch::Twitter->new;
-my $body  = $batch->cipherone->tweet_text('go_to_sleep');
+my $cipherone = Cipherone->new;
 
-$batch->change_image_off;
-$batch->tweet($body);
+my $model = $cipherone->model('Twitter');
+my $body  = $cipherone->tweet_text('go_to_sleep');
+
+$model->change_image_off;
+$model->tweet($body);
