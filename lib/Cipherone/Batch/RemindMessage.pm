@@ -42,7 +42,7 @@ sub streaming {
     $cv->recv;
 }
 
-sub register {
+sub _response_and_register {
     my ($self, $tweet) = @_;
 
     my $cipherone = $self->cipherone;
