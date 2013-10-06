@@ -3,96 +3,28 @@ use Mouse;
 use utf8;
 
 extends 'Cipherone::Batch';
+with 'Cipherone::Role::Twitter';
 
-use Encode;
-use File::Basename;
-use LWP::UserAgent;
+has screen_name => (
+    is      => 'rw',
+    default => '@c1pher0ne',
+);
 
 __PACKAGE__->meta->make_immutable;
 
 no Mouse;
 
-sub tweet_trend {
-    my $self = shift;
+sub tweet_text {
+    my ($self, $text, $replace_words) = @_;
 
-    my $cipherone = $self->cipherone;
-
-    my $trend_id     = $cipherone->schema('Trend')->max_id;
-    my $trend_detail = $cipherone->schema('TrendDetail')->random($trend_id);
-    my $adjective    = $cipherone->schema('Adjective')->random;
-
-    my $body = $cipherone->tweet_text('tweet_trend', {
-        trend     => $trend_detail->body,
-        adjective => $adjective->body,
-        url       => $cipherone->bitly->shorten('http://google.com/search?q=' . $trend_detail->body)->short_url,
-    });
-
-    $cipherone->twitter->update($body);
-    $trend_detail->update({is_tweet => 1});
-}
-
-sub tweet_media_ranking {
-    my ($self, $media_type_name) = @_;
-
-    my $cipherone = $self->cipherone;
-
-    my $media_type           = $cipherone->schema('MediaType')->search_by_name($media_type_name);
-    my $media_ranking_id     = $cipherone->schema('MediaRanking')->max_id($media_type->id);
-    my $media_ranking_detail = $cipherone->schema('MediaRankingDetail')->random($media_ranking_id);
-    my $media_category_id    = $media_ranking_detail->media_category_id;
-    my $media_category       = $cipherone->schema('MediaCategory')->search_by_id($media_category_id);
-
-    my $attr = {
-        title => $media_ranking_detail->title,
-        url   => $cipherone->bitly->shorten($media_ranking_detail->url)->short_url,
-    };
-    if ($media_type_name eq 'topsongs') {
-        $attr->{artist} = $media_ranking_detail->artist;
+    if ($replace_words) {
+        for my $key (keys %{ $replace_words }) {
+            my $value = $replace_words->{$key};
+            $text =~ s/(?:__${key}__)/$value/g;
+        }
     }
 
-    my $tweet_text_type = "tweet_${media_type_name}";
-    my $body            = $cipherone->tweet_text($tweet_text_type, $attr);
-
-    my $user_agent = LWP::UserAgent->new;
-    my $res        = $user_agent->get($media_ranking_detail->image_url);
-
-    $cipherone->twitter->update_with_media(encode('utf8', $body), [
-        undef,
-        basename($media_ranking_detail->image_url),
-        Content => $res->content,
-    ]);
-    $media_ranking_detail->update({is_tweet => 1});
-}
-
-sub tweet_poem {
-    my $self = shift;
-
-    my $cipherone = $self->cipherone;
-
-    my $poem = $cipherone->model('Poem');
-
-    my @sentences;
-    for my $length (5, 7, 5, 7, 7) {
-        push @sentences, $poem->get_hanamogera($length);
-    }
-
-    $cipherone->twitter->update(join('　', @sentences));
-}
-
-sub tweet_remind_message {
-    my $self = shift;
-
-    my $cipherone = $self->cipherone;
-
-    my $remind_messages = $cipherone->schema('RemindMessage')->have_to_tweet_now_list;
-
-    for my $remind_message (@{ $remind_messages }) {
-        my $body = $remind_message->screen_name . ' ' . $remind_message->body;
-
-        $cipherone->twitter->update($body);
-
-        $remind_message->update({is_tweet => 1});
-    }
+    $text;
 }
 
 1;

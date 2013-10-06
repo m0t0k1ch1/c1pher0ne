@@ -2,13 +2,9 @@ package Cipherone::Batch;
 use Mouse;
 use utf8;
 
-use Cipherone;
-
-has cipherone => (
-    is      => 'rw',
-    default => sub {
-        Cipherone->new;
-    },
+with (
+    'Cipherone::Role::Config',
+    'Cipherone::Role::Singleton',
 );
 
 __PACKAGE__->meta->make_immutable;
