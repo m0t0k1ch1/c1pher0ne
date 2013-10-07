@@ -24,7 +24,9 @@ sub _build__sources {
 
     my %sources;
     for my $trend_source (@{ $trend_sources }) {
-        my $source_name = 'Cipherone::Model::Trend::Source::' . $trend_source->{name};
+        my $source_name =
+            'Cipherone::Model::Trend::Source::'
+            . join '', (map { ucfirst $_ } (split /_/, $trend_source->{name}));
 
         $sources{$trend_source->{id}} = $source_name->instance;
     }

@@ -9,7 +9,7 @@
         {id => 3, name => 'topfreeapplications'},
     ],
     trend_source => [
-        {id => 1, name => 'Twitter'},
-        {id => 2, name => 'Kizasi'},
+        {id => 1, name => 'twitter'},
+        {id => 2, name => 'kizasi'},
     ],
 }
