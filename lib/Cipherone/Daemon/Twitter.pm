@@ -17,11 +17,6 @@ for my $file (@files) {
     eval "use ${response_name}";
 }
 
-has _responses => (
-    is         => 'rw',
-    lazy_build => 1,
-);
-
 __PACKAGE__->meta->make_immutable;
 
 no Mouse;
