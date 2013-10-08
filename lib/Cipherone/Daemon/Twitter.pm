@@ -71,7 +71,7 @@ sub streaming {
 
     $cv->recv;
 
-    die;
+    die 'DIE';
 }
 
 1;
