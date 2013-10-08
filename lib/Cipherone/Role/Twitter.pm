@@ -9,6 +9,11 @@ has twitter => (
     lazy_build => 1,
 );
 
+has screen_name => (
+    is      => 'rw',
+    default => 'c1pher0ne',
+);
+
 sub _build_twitter {
     my $self = shift;
 
@@ -16,6 +21,19 @@ sub _build_twitter {
         traits => [qw/API::RESTv1_1/],
         %{ $self->config('twitter') },
     );
+}
+
+sub tweet_text {
+    my ($self, $text, $replace_words) = @_;
+
+    if ($replace_words) {
+        for my $key (keys %{ $replace_words }) {
+            my $value = $replace_words->{$key};
+            $text =~ s/(?:__${key}__)/$value/g;
+        }
+    }
+
+    $text;
 }
 
 1;
