@@ -1,0 +1,86 @@
+package Cipherone::Daemon::Twitter::Response::RemindMessage;
+use Mouse;
+use utf8;
+
+extends 'Cipherone::Daemon::Twitter::Response';
+with (
+    'Cipherone::Role::Schema',
+    'Cipherone::Daemon::Twitter::Role::Response',
+);
+
+use DateTime;
+use DateTime::Format::HTTP;
+
+has _tweet_text => (
+    is      => 'rw',
+    default => sub {
+        {
+            awake  => '御意！__date__ になったらリマインドするね',
+            asleep => '...もー！起こさないでよ！__date__ ね！はいはい！おやすみ！',
+            error  => {
+                past => '過去には戻れないよ！現実を見て！',
+            },
+        }
+    },
+);
+
+__PACKAGE__->meta->make_immutable;
+
+no Mouse;
+
+sub response {
+    my ($self, $tweet) = @_;
+
+    my $status_id = $tweet->{id};
+    next if ($self->schema('RemindMessage')->search_by_status_id($status_id));
+
+    my @hash_tags = map { $_->{text} } @{ $tweet->{entities}->{hashtags} };
+
+    if (grep { $_ eq 'remind' } @hash_tags) {
+        my $body_from = $tweet->{text};
+
+        if ($body_from =~ /\s(\d{4}\/\d{1,2}\/\d{1,2} \d{1,2}:\d{1,2})$/) {
+            my $remind_date_string = $1;
+            my $remind_date        = DateTime::Format::HTTP->parse_datetime($remind_date_string);
+
+            my $screen_name_from = '@' . $tweet->{user}->{screen_name};
+            my $screen_name_to   = '@' . $self->screen_name;
+
+            $body_from =~ s/(?:${remind_date_string})//g;
+            $body_from =~ s/(?:${screen_name_to})//g;
+            $body_from =~ s/^\s*(.*?)\s*$/$1/g;
+
+            my $body_to = $screen_name_from;;
+            my $attr = {
+                status_id   => $status_id,
+                screen_name => $screen_name_from,
+                body        => $body_from,
+                remind_date => $remind_date,
+            };
+
+            my $now = DateTime->now(time_zone => 'local');
+
+            if ($remind_date > $now) {
+                my $tweet_text_type = $now->hour >= 1 && $now->hour < 7 ? 'asleep' : 'awake';
+
+                $body_to .= ' ' . $self->tweet_text($self->_tweet_text->{$tweet_text_type}, {
+                    date => $remind_date_string,
+                });
+                $attr->{is_tweet} = 0;
+            }
+            else {
+                $body_to .= ' ' . $self->tweet_text->{error}->{past};
+                $attr->{is_tweet} = 1;
+            }
+
+            $self->schema('RemindMessage')->insert($attr);
+
+            $self->twitter->update({
+                status                => $body_to,
+                in_reply_to_status_id => $tweet->{id},
+            });
+        }
+    }
+}
+
+1;
