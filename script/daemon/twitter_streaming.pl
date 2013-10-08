@@ -6,4 +6,4 @@ use FindBin::libs;
 use Cipherone;
 
 my $cipherone = Cipherone->new;
-$cipherone->twitter_batch('Stream')->streaming;
+$cipherone->daemon('Twitter')->streaming;

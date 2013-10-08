@@ -15,7 +15,7 @@ for my $file (@files) {
 }
 
 sub daemon {
-    my ($self, $name);
+    my ($self, $name) = @_;
 
     my $daemon_name = 'Cipherone::Daemon';
     if ($name) {
