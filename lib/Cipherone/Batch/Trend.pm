@@ -18,11 +18,10 @@ sub register {
     my $trend_source = $self->schema('TrendSource')->search_by_name($trend_source_name)
         // die 'invalid trend_souce';
 
-    my $trend_source_id = $trend_source->id;
-    my $results         = $self->model('Trend')->get($trend_source_id);
+    my $results = $self->model('Trend')->get($trend_source_name);
 
     my $trend = $self->schema('Trend')->insert({
-        trend_source_id => $trend_source_id,
+        trend_source_id => $trend_source->id,
     });
 
     for my $result (@{ $results }) {

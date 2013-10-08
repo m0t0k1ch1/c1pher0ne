@@ -4,44 +4,39 @@ use utf8;
 
 extends 'Cipherone::Model';
 
-my @sources = glob 'lib/Cipherone/Model/Trend/Source/*';
-for my $source (@sources) {
-    my $source_name = 'Cipherone::Model::Trend::Source::' . fileparse($source, '.pm');
-    eval "use ${source_name}";
-}
-
 use File::Basename;
 
-has _sources => (
-    is         => 'rw',
-    lazy_build => 1,
-);
+my $source_name_base = 'Cipherone::Model::Trend::Source';
 
-sub _build__sources {
-    my $self = shift;
-
-    my $trend_sources = $self->master_data('trend_source');
-
-    my %sources;
-    for my $trend_source (@{ $trend_sources }) {
-        my $source_name =
-            'Cipherone::Model::Trend::Source::'
-            . join '', (map { ucfirst $_ } (split /_/, $trend_source->{name}));
-
-        $sources{$trend_source->{id}} = $source_name->instance;
-    }
-
-    $self->_sources(\%sources);
+my @files = glob 'lib/Cipherone/Model/Trend/Source/*';
+for my $file (@files) {
+    my ($source_name_tail) = fileparse $file, '.pm';
+    my $source_name        = "${source_name_base}::${source_name_tail}";
+    eval "use ${source_name}";
 }
 
 __PACKAGE__->meta->make_immutable;
 
 no Mouse;
 
-sub get {
-    my ($self, $trend_source_id) = @_;
+sub _source {
+    my ($self, $name) = @_;
 
-    $self->_sources->{$trend_source_id}->trends;
+    my $trend_source_name = 'Cipherone::Model::Trend::Source';
+    if ($name) {
+        my $trend_source_name_tail = join '', (map { ucfirst $_ } (split /_/, $name));
+        $trend_source_name .= "::${trend_source_name_tail}"
+    }
+
+    $trend_source_name->instance;
+}
+
+sub get {
+    my ($self, $name) = @_;
+
+    my $trend_source = $self->_source($name);
+
+    $trend_source->trends;
 }
 
 1;
