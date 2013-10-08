@@ -2,39 +2,46 @@ package Cipherone::Role::Batch;
 use Mouse::Role;
 use utf8;
 
-use Cipherone::Batch;
+use File::Basename;
 
-my @batches = glob 'lib/Cipherone/Batch/*';
-for my $batch (@batches) {
-    my $batch_name = 'Cipherone::Batch::' . fileparse($batch, '.pm');
+my $batch_name_base = 'Cipherone::Batch';
+eval "use ${batch_name_base}";
+
+my @files;
+
+@files = glob 'lib/Cipherone/Batch/*';
+for my $file (@files) {
+    my ($batch_name_tail) = fileparse $file, '.pm';
+    my $batch_name        = "${batch_name_base}::${batch_name_tail}";
     eval "use ${batch_name}";
 }
 
-my @twitter_batches = glob 'lib/Cipherone/Batch/Twitter/*';
-for my $twitter_batch (@twitter_batches) {
-    my $twitter_batch_name = 'Cipherone::Batch::Twitter::' . fileparse($twitter_batch, '.pm');
+$batch_name_base .= '::Twitter';
+
+@files = glob 'lib/Cipherone/Batch/Twitter/*';
+for my $file (@files) {
+    my ($twitter_batch_name_tail) = fileparse $file, '.pm';
+    my $twitter_batch_name        = "${batch_name_base}::${twitter_batch_name_tail}";
     eval "use ${twitter_batch_name}";
 }
 
-use File::Basename;
-
 sub batch {
-    my ($self, $batch) = @_;
+    my ($self, $name) = @_;
 
     my $batch_name = 'Cipherone::Batch';
-    if ($batch) {
-        $batch_name .= "::${batch}";
+    if ($name) {
+        $batch_name .= "::${name}";
     }
 
     $batch_name->instance;
 }
 
 sub twitter_batch {
-    my ($self, $twitter_batch) = @_;
+    my ($self, $name) = @_;
 
     my $twitter_batch_name = 'Cipherone::Batch::Twitter';
-    if ($twitter_batch) {
-        $twitter_batch_name .= "::${twitter_batch}";
+    if ($name) {
+        $twitter_batch_name .= "::${name}";
     }
 
     $twitter_batch_name->instance;

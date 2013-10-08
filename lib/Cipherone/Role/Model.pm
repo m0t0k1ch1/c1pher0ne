@@ -2,22 +2,24 @@ package Cipherone::Role::Model;
 use Mouse::Role;
 use utf8;
 
-use Cipherone::Model;
+use File::Basename;
 
-my @models = glob 'lib/Cipherone/Model/*';
-for my $model (@models) {
-    my $model_name = 'Cipherone::Model::' . fileparse($model, '.pm');
+my $model_name_base = 'Cipherone::Model';
+eval "use ${model_name_base}";
+
+my @files = glob 'lib/Cipherone/Model/*';
+for my $file (@files) {
+    my ($model_name_tail) = fileparse $file, '.pm';
+    my $model_name        = "${model_name_base}::${model_name_tail}";
     eval "use ${model_name}";
 }
 
-use File::Basename;
-
 sub model {
-    my ($self, $model) = @_;
+    my ($self, $name) = @_;
 
     my $model_name = 'Cipherone::Model';
-    if ($model) {
-        $model_name .= "::${model}";
+    if ($name) {
+        $model_name .= "::${name}";
     }
 
     $model_name->instance;

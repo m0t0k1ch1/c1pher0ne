@@ -2,22 +2,24 @@ package Cipherone::Role::Schema;
 use Mouse::Role;
 use utf8;
 
-use Cipherone::Schema;
+use File::Basename;
 
-my @schemas = glob 'lib/Cipherone/Schema/*';
-for my $schema (@schemas) {
-    my $schema_name = 'Cipherone::Schema::' . fileparse($schema, '.pm');
+my $schema_name_base = 'Cipherone::Schema';
+eval "use ${schema_name_base}";
+
+my @files = glob 'lib/Cipherone/Schema/*';
+for my $file (@files) {
+    my ($schema_name_tail) = fileparse $file, '.pm';
+    my $schema_name        = "${schema_name_base}::${schema_name_tail}";
     eval "use ${schema_name}";
 }
 
-use File::Basename;
-
 sub schema {
-    my ($self, $schema) = @_;
+    my ($self, $name) = @_;
 
     my $schema_name = 'Cipherone::Schema';
-    if ($schema) {
-        $schema_name .= "::${schema}";
+    if ($name) {
+        $schema_name .= "::${name}";
     }
 
     $schema_name->instance;
