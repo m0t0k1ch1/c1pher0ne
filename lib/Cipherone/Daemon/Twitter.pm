@@ -6,11 +6,12 @@ extends 'Cipherone::Daemon';
 with 'Cipherone::Role::Twitter';
 
 use AnyEvent::Twitter::Stream;
+use DateTime;
 use File::Basename;
 
-my $response_name_base = 'Cipherone::Batch::Twitter::Stream::Response';
+my $response_name_base = 'Cipherone::Daemon::Twitter::Response';
 
-my @files = glob 'lib/Cipherone/Batch/Twitter/Stream/Response/*';
+my @files = glob 'lib/Cipherone/Daemon/Twitter/Response/*';
 for my $file (@files) {
     my $response_name_tail = fileparse $file, '.pm';
     my $response_name      = "${response_name_base}::${response_name_tail}";
@@ -24,7 +25,7 @@ no Mouse;
 sub _response {
     my ($self, $name) = @_;
 
-    my $response_name = 'Cipherone::Batch::Twitter::Stream::Response';
+    my $response_name = 'Cipherone::Daemon::Twitter::Response';
     if ($name) {
         my $response_name .= $name;
     }
@@ -59,12 +60,13 @@ sub streaming {
         on_tweet => sub {
             my $tweet = shift;
 
-            $self->_response($tweet);
+            $self->response($tweet);
         },
         on_error => sub {
             my $message = shift;
 
-            warn "ERROR: ${message}";
+            my $now = DateTime->now(time_zone => 'local');
+            warn "${now} ERROR: ${message}";
             $cv->send;
         },
     );
