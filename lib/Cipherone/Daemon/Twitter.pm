@@ -27,14 +27,14 @@ sub _response {
 
     my $response_name = 'Cipherone::Daemon::Twitter::Response';
     if ($name) {
-        my $response_name .= $name;
+        $response_name .= "::${name}";
     }
 
     $response_name->instance;
 }
 
 sub response {
-    my ($self, $tweet);
+    my ($self, $tweet) = @_;
 
     my @hash_tags = map { $_->{text} } @{ $tweet->{entities}->{hashtags} };
 

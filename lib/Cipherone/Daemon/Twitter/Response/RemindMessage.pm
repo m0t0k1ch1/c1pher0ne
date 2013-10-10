@@ -69,7 +69,7 @@ sub response {
                 });
             }
             else {
-                $text_to .= ' ' . $self->tweet_text->{error}->{past};
+                $text_to .= ' ' . $self->_tweet_text->{error}->{past};
             }
 
             $self->twitter->update({
