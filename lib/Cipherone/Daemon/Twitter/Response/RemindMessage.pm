@@ -51,7 +51,7 @@ sub response {
 
             if ($remind_date > $now) {
                 my $tweet_text_type = $now->hour >= 1 && $now->hour < 7 ? 'asleep' : 'awake';
-                my $text_base       = "${screen_name_to} " . $self->_tweet_text->{$tweet_text_type};
+                my $text_base       = "${screen_name_from} " . $self->_tweet_text->{$tweet_text_type};
 
                 $text_to = $self->tweet_text($text_base, {
                     date => $remind_date_string,
