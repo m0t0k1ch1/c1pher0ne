@@ -31,8 +31,8 @@ sub register {
     });
 
     for my $result (@{ $results }) {
-        my $media_category =
-            $self->schema('MediaCategory')->search_by_im_id($result->{category}->{im_id});
+        my $media_category
+            = $self->schema('MediaCategory')->search_by_im_id($result->{category}->{im_id});
 
         unless ($media_category) {
             $media_category = $self->schema('MediaCategory')->insert({
