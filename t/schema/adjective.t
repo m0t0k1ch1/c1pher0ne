@@ -26,7 +26,7 @@ subtest 'count' => sub {
 
 subtest 'random' => sub {
     my $row = $adjective->random;
-    ok $row, 'body: ' . $row->body;
+    ok $row;
     isa_ok $row, 'Teng::Row';
 };
 

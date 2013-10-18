@@ -16,6 +16,7 @@ our @EXPORT = (
     'insert_media_category',
     'insert_media_ranking',
     'insert_media_ranking_detail',
+    'insert_remind_message',
 );
 
 my $cipherone = Cipherone->new;
@@ -44,28 +45,35 @@ sub insert_adjective {
 }
 
 sub insert_media_category {
-    my $im_id = shift;
+    my $attr = shift;
 
     $cipherone->schema('MediaCategory')->insert({
-        im_id => $im_id,
-        name  => _make_random_string(_rand(10)),
+        name => _make_random_string(_rand(10)),
+        %{ $attr },
     });
 }
 
 sub insert_media_ranking {
-    my $media_type_id = shift;
+    my $attr = shift;
 
-    $cipherone->schema('MediaRanking')->insert({
-        media_type_id => $media_type_id,
-    });
+    $cipherone->schema('MediaRanking')->insert($attr);
 }
 
 sub insert_media_ranking_detail {
-    my $media_ranking_id = shift;
+    my $attr = shift;
 
     $cipherone->schema('MediaRankingDetail')->insert({
-        media_ranking_id => $media_ranking_id,
-        title            => _make_random_string(_rand(10)),
+        title => _make_random_string(_rand(10)),
+        %{ $attr },
+    });
+}
+
+sub insert_remind_message {
+    my $attr = shift;
+
+    $cipherone->schema('RemindMessage')->insert({
+        body => _make_random_string(_rand(10)),
+        %{ $attr },
     });
 }
 

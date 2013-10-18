@@ -13,7 +13,9 @@ my $media_type_id = 1;
 my $row_count     = 10;
 
 for (1..$row_count) {
-    insert_media_ranking($media_type_id);
+    insert_media_ranking({
+        media_type_id => $media_type_id,
+    });
 }
 
 my $cipherone     = Cipherone->new;

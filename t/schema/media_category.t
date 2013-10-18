@@ -11,21 +11,25 @@ use Test::More;
 
 my $im_id = 1;
 
-insert_media_category($im_id);
+insert_media_category({
+    im_id => $im_id,
+});
 
 my $cipherone      = Cipherone->new;
 my $media_category = $cipherone->schema('MediaCategory');
 
 subtest 'search_by_id' => sub {
-    my $row = $media_category->search_by_id(1);
-    ok $row, 'name: ' . $row->name;
+    my $id = 1;
+
+    my $row = $media_category->search_by_id($id);
+    ok $row;
     isa_ok $row, 'Teng::Row';
-    is $row->id, 1, 'id: ' . $row->id;
+    is $row->id, $id, 'id: ' . $row->id;
 };
 
 subtest 'search_by_im_id' => sub {
     my $row = $media_category->search_by_id($im_id);
-    ok $row, 'name: ' . $row->name;
+    ok $row;
     isa_ok $row, 'Teng::Row';
     is $row->im_id, $im_id, 'im_id: ' . $row->im_id;
 };
