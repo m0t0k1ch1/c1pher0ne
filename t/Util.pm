@@ -15,9 +15,16 @@ our @EXPORT = (
     'insert_adjective',
     'insert_media_category',
     'insert_media_ranking',
+    'insert_media_ranking_detail',
 );
 
 my $cipherone = Cipherone->new;
+
+sub _rand {
+    my $length = shift;
+
+    (int rand $length) + 1;
+}
 
 sub _make_random_string {
     my $length = shift;
@@ -32,7 +39,7 @@ sub insert_master_data {
 
 sub insert_adjective {
     $cipherone->schema('Adjective')->insert({
-        body => _make_random_string((int rand 10) + 1),
+        body => _make_random_string(_rand(10)),
     });
 }
 
@@ -41,7 +48,7 @@ sub insert_media_category {
 
     $cipherone->schema('MediaCategory')->insert({
         im_id => $im_id,
-        name  => _make_random_string((int rand 10) + 1),
+        name  => _make_random_string(_rand(10)),
     });
 }
 
@@ -50,6 +57,15 @@ sub insert_media_ranking {
 
     $cipherone->schema('MediaRanking')->insert({
         media_type_id => $media_type_id,
+    });
+}
+
+sub insert_media_ranking_detail {
+    my $media_ranking_id = shift;
+
+    $cipherone->schema('MediaRankingDetail')->insert({
+        media_ranking_id => $media_ranking_id,
+        title            => _make_random_string(_rand(10)),
     });
 }
 
