@@ -9,9 +9,9 @@ use t::Util;
 
 use Test::More;
 
-my $row_count = 10;
+my $row_num = 10;
 
-for (1..$row_count) {
+for (1..$row_num) {
     insert_adjective;
 }
 
@@ -21,7 +21,7 @@ my $adjective = $cipherone->schema('Adjective');
 subtest 'count' => sub {
     my $count = $adjective->count;
     ok $count;
-    is $count, $row_count, 'count: ' . $count;
+    is $count, $row_num, 'count: ' . $count;
 };
 
 subtest 'random' => sub {
