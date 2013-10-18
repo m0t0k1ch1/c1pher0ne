@@ -9,10 +9,10 @@ use t::Util;
 
 use Test::More;
 
-insert_master_data;
-
 my $cipherone  = Cipherone->new;
 my $media_type = $cipherone->schema('MediaType');
+
+insert_master_data;
 
 subtest 'search_by_name' => sub {
     my $masters = $cipherone->master_data('media_type');

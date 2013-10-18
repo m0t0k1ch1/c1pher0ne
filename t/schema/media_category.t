@@ -9,14 +9,14 @@ use t::Util;
 
 use Test::More;
 
+my $cipherone      = Cipherone->new;
+my $media_category = $cipherone->schema('MediaCategory');
+
 my $im_id = 1;
 
 insert_media_category({
     im_id => $im_id,
 });
-
-my $cipherone      = Cipherone->new;
-my $media_category = $cipherone->schema('MediaCategory');
 
 subtest 'search_by_id' => sub {
     my $id = 1;

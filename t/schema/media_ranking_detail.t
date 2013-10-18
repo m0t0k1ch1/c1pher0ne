@@ -9,6 +9,9 @@ use t::Util;
 
 use Test::More;
 
+my $cipherone            = Cipherone->new;
+my $media_ranking_detail = $cipherone->schema('MediaRankingDetail');
+
 my $media_ranking_id = 1;
 
 for (1..10) {
@@ -16,9 +19,6 @@ for (1..10) {
         media_ranking_id => $media_ranking_id,
     });
 }
-
-my $cipherone            = Cipherone->new;
-my $media_ranking_detail = $cipherone->schema('MediaRankingDetail');
 
 subtest 'random' => sub {
     my $row = $media_ranking_detail->random($media_ranking_id);
