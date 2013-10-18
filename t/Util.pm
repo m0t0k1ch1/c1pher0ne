@@ -21,7 +21,7 @@ sub _make_random_string {
     my $length = shift;
 
     my $random_maker = String::Random->new;
-    $random_maker->randregex("[A-Za-z0-9]{$length}")
+    $random_maker->randregex("[A-Za-z0-9]{$length}");
 }
 
 sub insert_master_data {

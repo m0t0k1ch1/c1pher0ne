@@ -21,12 +21,12 @@ my $adjective = $cipherone->schema('Adjective');
 subtest 'count' => sub {
     my $count = $adjective->count;
     ok $count;
-    is $count, $row_count;
+    is $count, $row_count, 'count: ' . $count;
 };
 
 subtest 'random' => sub {
     my $row = $adjective->random;
-    ok $row;
+    ok $row, 'body: ' . $row->body;
     isa_ok $row, 'Teng::Row';
 };
 

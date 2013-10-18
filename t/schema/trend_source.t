@@ -15,12 +15,14 @@ my $cipherone    = Cipherone->new;
 my $trend_source = $cipherone->schema('TrendSource');
 
 subtest 'search_by_name' => sub {
-    my $master = $cipherone->master_data('trend_source')->[0];
+    my $masters = $cipherone->master_data('trend_source');
 
-    my $row = $trend_source->search_by_name($master->{name});
-    ok $row;
-    isa_ok $row, 'Teng::Row';
-    is $row->id, $master->{id};
+    for my $master (@{ $masters }) {
+        my $row = $trend_source->search_by_name($master->{name});
+        ok $row, 'name: ' . $row->name;
+        isa_ok $row, 'Teng::Row';
+        is $row->id, $master->{id}, 'id: ' . $row->id;
+    }
 };
 
 done_testing;
