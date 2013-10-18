@@ -17,6 +17,7 @@ our @EXPORT = (
     'insert_media_ranking',
     'insert_media_ranking_detail',
     'insert_remind_message',
+    'insert_trend',
 );
 
 my $cipherone = Cipherone->new;
@@ -75,6 +76,12 @@ sub insert_remind_message {
         body => _make_random_string(_rand(10)),
         %{ $attr },
     });
+}
+
+sub insert_trend {
+    my $attr = shift;
+
+    $cipherone->schema('Trend')->insert($attr);
 }
 
 1;
