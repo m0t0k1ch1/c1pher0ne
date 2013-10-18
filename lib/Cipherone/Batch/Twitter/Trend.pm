@@ -18,9 +18,10 @@ __PACKAGE__->meta->make_immutable;
 no Mouse;
 
 sub tweet {
-    my $self = shift;
+    my ($self, $trend_source_name) = @_;
 
-    my $trend_id     = $self->schema('Trend')->max_id;
+    my $trend_source = $self->schema('TrendSource')->search_by_name($trend_source_name);
+    my $trend_id     = $self->schema('Trend')->max_id($trend_source->id);
     my $trend_detail = $self->schema('TrendDetail')->random($trend_id);
     my $adjective    = $self->schema('Adjective')->random;
 
