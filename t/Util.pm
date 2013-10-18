@@ -14,6 +14,7 @@ our @EXPORT = (
     'insert_master_data',
     'insert_adjective',
     'insert_media_category',
+    'insert_media_ranking',
 );
 
 my $cipherone = Cipherone->new;
@@ -41,6 +42,14 @@ sub insert_media_category {
     $cipherone->schema('MediaCategory')->insert({
         im_id => $im_id,
         name  => _make_random_string((int rand 10) + 1),
+    });
+}
+
+sub insert_media_ranking {
+    my $media_type_id = shift;
+
+    $cipherone->schema('MediaRanking')->insert({
+        media_type_id => $media_type_id,
     });
 }
 
