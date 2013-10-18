@@ -24,5 +24,6 @@ sub max_id {
         order_by => 'id DESC',
     });
 
-    $itr->next->id;
+    my $row = $itr->next;
+    $row ? $row->id : 0;
 }
