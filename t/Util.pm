@@ -13,6 +13,7 @@ use String::Random;
 our @EXPORT = (
     'insert_master_data',
     'insert_adjective',
+    'insert_media_category',
 );
 
 my $cipherone = Cipherone->new;
@@ -31,6 +32,15 @@ sub insert_master_data {
 sub insert_adjective {
     $cipherone->schema('Adjective')->insert({
         body => _make_random_string((int rand 10) + 1),
+    });
+}
+
+sub insert_media_category {
+    my $im_id = shift;
+
+    $cipherone->schema('MediaCategory')->insert({
+        im_id => $im_id,
+        name  => _make_random_string((int rand 10) + 1),
     });
 }
 
