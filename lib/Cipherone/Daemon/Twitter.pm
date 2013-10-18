@@ -3,7 +3,10 @@ use Mouse;
 use utf8;
 
 extends 'Cipherone::Daemon';
-with 'Cipherone::Role::Twitter';
+with (
+    'Cipherone::Role::Twitter',
+    'Cipherone::Role::Schema',
+);
 
 use AnyEvent::Twitter::Stream;
 use DateTime;
@@ -65,15 +68,15 @@ sub streaming {
         on_error => sub {
             my $message = shift;
 
-            my $now = DateTime->now(time_zone => 'local');
-            warn "${now} ERROR: ${message}";
+            warn "ERROR: ${message}";
             $cv->send;
         },
     );
 
     $cv->recv;
 
-    die 'DIE';
+    my $now = $self->schema->now;
+    die "DIE at ${now}";
 }
 
 1;

@@ -19,6 +19,10 @@ no Mouse;
 our $dbh;
 our $teng;
 
+sub now {
+    DateTime->now(time_zone => 'local');
+}
+
 sub dbh {
     my $self = shift;
 

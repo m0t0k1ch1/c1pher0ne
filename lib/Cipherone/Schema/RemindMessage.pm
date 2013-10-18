@@ -31,7 +31,7 @@ sub have_to_tweet_now_list {
         FROM ${table}
         WHERE remind_date <= ?
             AND is_tweet = 0
-    /, [DateTime->now(time_zone => 'local')]);
+    /, [$self->now]);
 
     \@result;
 }

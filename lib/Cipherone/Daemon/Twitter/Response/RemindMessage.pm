@@ -47,7 +47,7 @@ sub response {
             my $screen_name_to   = '@' . $self->screen_name;
 
             my $text_to;
-            my $now = DateTime->now(time_zone => 'local');
+            my $now = $self->schema->now;
 
             if ($remind_date > $now) {
                 my $tweet_text_type = $now->hour >= 1 && $now->hour < 7 ? 'asleep' : 'awake';
