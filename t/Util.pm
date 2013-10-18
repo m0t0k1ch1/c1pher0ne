@@ -18,6 +18,7 @@ our @EXPORT = (
     'insert_media_ranking_detail',
     'insert_remind_message',
     'insert_trend',
+    'insert_trend_detail',
 );
 
 my $cipherone = Cipherone->new;
@@ -82,6 +83,15 @@ sub insert_trend {
     my $attr = shift;
 
     $cipherone->schema('Trend')->insert($attr);
+}
+
+sub insert_trend_detail {
+    my $attr = shift;
+
+    $cipherone->schema('TrendDetail')->insert({
+        body => _make_random_string(_rand(10)),
+        %{ $attr },
+    });
 }
 
 1;
