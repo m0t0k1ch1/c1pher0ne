@@ -32,51 +32,45 @@ sub response {
     my ($self, $tweet) = @_;
 
     my $status_id = $tweet->{id};
-    next if ($self->schema('RemindMessage')->search_by_status_id($status_id));
+    my $text_from = $tweet->{text};
 
-    my @hash_tags = map { $_->{text} } @{ $tweet->{entities}->{hashtags} };
+    if ($text_from =~ /\s(\d{4}\/\d{1,2}\/\d{1,2} \d{1,2}:\d{1,2})$/) {
+        my $remind_date_string = $1;
+        my $remind_date        = DateTime::Format::HTTP->parse_datetime($remind_date_string);
 
-    if (grep { $_ eq 'remind' } @hash_tags) {
-        my $text_from = $tweet->{text};
+        my $screen_name_from = '@' . $tweet->{user}->{screen_name};
+        my $screen_name_to   = '@' . $self->screen_name;
 
-        if ($text_from =~ /\s(\d{4}\/\d{1,2}\/\d{1,2} \d{1,2}:\d{1,2})$/) {
-            my $remind_date_string = $1;
-            my $remind_date        = DateTime::Format::HTTP->parse_datetime($remind_date_string);
+        my $text_to;
+        my $now = $self->schema->now;
 
-            my $screen_name_from = '@' . $tweet->{user}->{screen_name};
-            my $screen_name_to   = '@' . $self->screen_name;
+        if ($remind_date > $now) {
+            my $tweet_text_type = $now->hour >= 1 && $now->hour < 7 ? 'asleep' : 'awake';
+            my $text_base       = "${screen_name_from} " . $self->_tweet_text->{$tweet_text_type};
 
-            my $text_to;
-            my $now = $self->schema->now;
+            $text_to = $self->tweet_text($text_base, {
+                date => $remind_date_string,
+            });
 
-            if ($remind_date > $now) {
-                my $tweet_text_type = $now->hour >= 1 && $now->hour < 7 ? 'asleep' : 'awake';
-                my $text_base       = "${screen_name_from} " . $self->_tweet_text->{$tweet_text_type};
+            $text_from =~ s/(?:${remind_date_string})//g;
+            $text_from =~ s/(?:${screen_name_to})//g;
+            $text_from =~ s/^\s*(.*?)\s*$/$1/g;
 
-                $text_to = $self->tweet_text($text_base, {
-                    date => $remind_date_string,
-                });
-
-                $text_from =~ s/(?:${remind_date_string})//g;
-                $text_from =~ s/(?:${screen_name_to})//g;
-                $text_from =~ s/^\s*(.*?)\s*$/$1/g;
-
-                $self->schema('RemindMessage')->insert({
-                    status_id   => $status_id,
-                    screen_name => $screen_name_from,
-                    body        => $text_from,
-                    remind_date => $remind_date,
-                });
-            }
-            else {
-                $text_to .= ' ' . $self->_tweet_text->{error}->{past};
-            }
-
-            $self->twitter->update({
-                status                => $text_to,
-                in_reply_to_status_id => $tweet->{id},
+            $self->schema('RemindMessage')->insert({
+                status_id   => $status_id,
+                screen_name => $screen_name_from,
+                body        => $text_from,
+                remind_date => $remind_date,
             });
         }
+        else {
+            $text_to .= ' ' . $self->_tweet_text->{error}->{past};
+        }
+
+        $self->twitter->update({
+            status                => $text_to,
+            in_reply_to_status_id => $tweet->{id},
+        });
     }
 }
 
