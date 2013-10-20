@@ -9,8 +9,8 @@ has _tweet_text => (
     is      => 'rw',
     default => sub {
         {
-            wake_up      => 'おはよう',
-            got_to_sleep => 'おやすみ',
+            wake_up     => 'おはよう',
+            go_to_sleep => 'おやすみ',
         }
     },
 );
