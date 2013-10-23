@@ -16,7 +16,7 @@ my $now  = DateTime->now(time_zone => 'local');
 my $hour = $now->hour;
 
 if ($now->ymd eq '2013-10-24') {
-    my $message = '@m0t0k1ch1 誕生日おめでとう！';
+    my $message = '@yumiyon 誕生日おめでとう！';
     unless ($hour == 0) {
         $message .= 'そういえば、' . $hour . '年前の今日も誕生日だったね！';
     }
