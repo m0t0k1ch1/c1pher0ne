@@ -7,7 +7,7 @@ with (
     'Cipherone::Role::Singleton',
 );
 
-use DateTime;
+use DateTime::HiRes;
 use DBI;
 use Teng;
 use Teng::Schema::Loader;
@@ -20,7 +20,7 @@ our $dbh;
 our $teng;
 
 sub now {
-    DateTime->now(time_zone => 'local');
+    DateTime::HiRes->now(time_zone => 'local');
 }
 
 sub dbh {
