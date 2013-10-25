@@ -15,9 +15,12 @@ sub tweet {
     my $remind_messages = $self->schema('RemindMessage')->have_to_tweet_now_list;
 
     for my $remind_message (@{ $remind_messages }) {
-        my $body = $remind_message->screen_name . ' ' . $remind_message->body;
+        my $screen_name = $remind_message->screen_name;
+        my $body        = $remind_message->body;
+        my $timestamp   = $self->schema->now->strftime('%Y-%m-%d %H:%M:%S');
 
-        $self->twitter->update($body);
+        my $text = "${screen_name} ${body} 【${timestamp}】";
+        $self->twitter->update($text);
 
         $remind_message->update({is_tweet => 1});
     }
