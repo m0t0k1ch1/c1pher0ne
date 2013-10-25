@@ -67,7 +67,7 @@ sub response {
             $text_to .= ' ' . $self->_tweet_text->{error}->{past};
         }
 
-        my $timestamp = $now->strftime('%Y-%m-%d %H:%M:%S');
+        my $timestamp = $now->strftime('%Y-%m-%d %H:%M:%S.%3N');
 
         $self->twitter->update({
             status                => "${text_to} 【${timestamp}】",

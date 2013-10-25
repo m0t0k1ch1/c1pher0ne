@@ -17,7 +17,7 @@ sub tweet {
     for my $remind_message (@{ $remind_messages }) {
         my $screen_name = $remind_message->screen_name;
         my $body        = $remind_message->body;
-        my $timestamp   = $self->schema->now->strftime('%Y-%m-%d %H:%M:%S');
+        my $timestamp   = $self->schema->now->strftime('%Y-%m-%d %H:%M:%S.%3N');
 
         my $text = "${screen_name} ${body} 【${timestamp}】";
         $self->twitter->update($text);
