@@ -35,7 +35,7 @@ sub _get_remind_date {
     my $text_from = $tweet->{text};
 
     my ($remind_date_string, $remind_date);
-    if ($text_from =~ /\s(\d{4}\/\d{1,2}\/\d{1,2} \d{1,2}:\d{1,2})$/) {
+    if ($text_from =~ /\s(\d{4}(\/|-)\d{1,2}(\/|-)\d{1,2} \d{1,2}:\d{1,2})$/) {
         $remind_date_string = $1;
         $text_from          =~ s/(?:${remind_date_string})//g;
         $remind_date = DateTime::Format::HTTP->parse_datetime($remind_date_string);
@@ -59,8 +59,6 @@ sub response {
     my $status_id                 = $tweet->{id};
     my ($remind_date, $text_from) = $self->_get_remind_date($tweet);
     die 'invalid format' unless $remind_date;
-
-    warn $remind_date;
 
     my $screen_name_from = '@' . $tweet->{user}->{screen_name};
     my $screen_name_to   = '@' . $self->screen_name;
