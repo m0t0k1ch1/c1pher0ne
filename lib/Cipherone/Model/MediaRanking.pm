@@ -12,9 +12,9 @@ __PACKAGE__->meta->make_immutable;
 no Mouse;
 
 sub _build_url {
-    my ($self, $media_type, $country, $limit) = @_;
+    my ($self, $media_type, $country) = @_;
 
-    "https://itunes.apple.com/${country}/rss/${media_type}/limit=${limit}/json";
+    "https://itunes.apple.com/${country}/rss/${media_type}/limit=100/json";
 }
 
 sub _get_entry_summary {
@@ -49,7 +49,7 @@ sub _get_entry_summary {
 sub get {
     my ($self, $media_type, $country, $limit) = @_;
 
-    my $url = $self->_build_url($media_type, $country, $limit);
+    my $url = $self->_build_url($media_type, $country);
 
     my $user_agent = LWP::UserAgent->new;
     my $res        = $user_agent->get($url);
@@ -58,15 +58,27 @@ sub get {
     my $entries = $limit == 1 ? [ $data->{feed}->{entry} ] : $data->{feed}->{entry};
 
     my @result;
-
     my $rank = 1;
-    for my $entry (@{ $entries }) {
-        my $summary = $self->_get_entry_summary($entry, $media_type);
-        $summary->{rank} = $rank;
 
-        push @result, $summary;
-
-        $rank++;
+    if ($media_type eq 'topfreeapplications') {
+        for my $entry (@{ $entries }) {
+            last if $rank > $limit;
+            if ($entry->{category}->{attributes}->{'im:id'} == 6014) {
+                my $summary = $self->_get_entry_summary($entry, $media_type);
+                $summary->{rank} = $rank;
+                push @result, $summary;
+                $rank++;
+            }
+        }
+    }
+    else {
+        for my $entry (@{ $entries }) {
+            last if $rank > $limit;
+            my $summary = $self->_get_entry_summary($entry, $media_type);
+            $summary->{rank} = $rank;
+            push @result, $summary;
+            $rank++;
+        }
     }
 
     \@result;
