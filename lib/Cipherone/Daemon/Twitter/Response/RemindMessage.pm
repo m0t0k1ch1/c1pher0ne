@@ -20,6 +20,7 @@ has _tweet_text => (
             error  => {
                 future => '先を見過ぎだよ！今を生きよう！',
                 past   => '過去には戻れないよ！現実を見て！',
+                length => 'もうちょっとシンプルにまとめてくれないと覚えられないよぉ。。',
             },
         }
     },
@@ -73,22 +74,26 @@ sub response {
         $text_to .= $screen_name_from . ' ' . $self->_tweet_text->{error}->{future};
     }
     else {
-        my $tweet_text_type = $now->hour >= 1 && $now->hour < 7 ? 'asleep' : 'awake';
-        my $text_base       = "${screen_name_from} " . $self->_tweet_text->{$tweet_text_type};
-
-        $text_to = $self->tweet_text($text_base, {
-            date => $remind_date->strftime('%Y/%m/%d %H:%M:%S'),
-        });
-
         $text_from =~ s/(?:${screen_name_to})//g;
         $text_from =~ s/^\s*(.*?)\s*$/$1/g;
 
-        $self->schema('RemindMessage')->insert({
-            status_id   => $status_id,
-            screen_name => $screen_name_from,
-            body        => $text_from,
-            remind_date => $remind_date,
-        });
+        if (length $text_from <= 100) {
+            my $tweet_text_type = $now->hour >= 1 && $now->hour < 7 ? 'asleep' : 'awake';
+            my $text_base       = "${screen_name_from} " . $self->_tweet_text->{$tweet_text_type};
+
+            $text_to = $self->tweet_text($text_base, {
+                date => $remind_date->strftime('%Y/%m/%d %H:%M:%S'),
+            });
+
+            $self->schema('RemindMessage')->insert({
+                status_id   => $status_id,
+                screen_name => $screen_name_from,
+                body        => $text_from,
+                remind_date => $remind_date,
+            });
+        } else {
+            $text_to .= $screen_name_from . ' ' . $self->_tweet_text->{error}->{length};
+        }
     }
 
     my $timestamp = $now->strftime('%Y-%m-%d %H:%M:%S.%3N');
