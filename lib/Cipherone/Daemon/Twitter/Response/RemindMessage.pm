@@ -46,10 +46,10 @@ sub response {
         my $now = $self->schema->now;
 
         if ($remind_date < $now) {
-            $text_to .= ' ' . $self->_tweet_text->{error}->{past};
+            $text_to .= $screen_name_from . ' ' . $self->_tweet_text->{error}->{past};
         }
         elsif ($remind_date->delta_days($now)->in_units('days') > 1000) {
-            $text_to .= ' ' . $self->_tweet_text->{error}->{future};
+            $text_to .= $screen_name_from . ' ' . $self->_tweet_text->{error}->{future};
         }
         else {
             my $tweet_text_type = $now->hour >= 1 && $now->hour < 7 ? 'asleep' : 'awake';
