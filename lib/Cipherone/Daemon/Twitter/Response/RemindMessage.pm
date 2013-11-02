@@ -45,7 +45,13 @@ sub response {
         my $text_to;
         my $now = $self->schema->now;
 
-        if ($remind_date > $now) {
+        if ($remind_date < $now) {
+            $text_to .= ' ' . $self->_tweet_text->{error}->{past};
+        }
+        elsif ($remind_date->delta_days($now)->in_units('days') > 1000) {
+            $text_to .= ' ' . $self->_tweet_text->{error}->{future};
+        }
+        else {
             my $tweet_text_type = $now->hour >= 1 && $now->hour < 7 ? 'asleep' : 'awake';
             my $text_base       = "${screen_name_from} " . $self->_tweet_text->{$tweet_text_type};
 
@@ -63,12 +69,6 @@ sub response {
                 body        => $text_from,
                 remind_date => $remind_date,
             });
-        }
-        elsif ($remind_date->delta_days($now)->in_units('days') > 1000) {
-            $text_to .= ' ' . $self->_tweet_text->{error}->{future};
-        }
-        else {
-            $text_to .= ' ' . $self->_tweet_text->{error}->{past};
         }
 
         my $timestamp = $now->strftime('%Y-%m-%d %H:%M:%S.%3N');
