@@ -64,7 +64,7 @@ sub response {
                 remind_date => $remind_date,
             });
         }
-        elsif ($remind_date->delta_days($now)->in_units('days' > 1000)) {
+        elsif ($remind_date->delta_days($now)->in_units('days') > 1000) {
             $text_to .= ' ' . $self->_tweet_text->{error}->{future};
         }
         else {
