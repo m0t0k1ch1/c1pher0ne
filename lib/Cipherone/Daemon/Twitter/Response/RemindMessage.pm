@@ -35,7 +35,10 @@ sub _get_remind_date {
     my $text_from = $tweet->{text};
 
     my ($remind_date_string, $remind_date);
-    if ($text_from =~ /\s(\d{4}((\/)|-)\d{1,2}((\/)|-)\d{1,2} \d{1,2}:\d{1,2})$/) {
+    if (
+        $text_from =~ /\s(\d{4}\/\d{1,2}\/\d{1,2} \d{1,2}:\d{1,2})$/
+        || $text_from =~ /\s(\d{4}-\d{1,2}-\d{1,2} \d{1,2}:\d{1,2})$/
+    ) {
         $remind_date_string = $1;
         $text_from          =~ s/(?:${remind_date_string})//g;
         $remind_date = DateTime::Format::HTTP->parse_datetime($remind_date_string);
