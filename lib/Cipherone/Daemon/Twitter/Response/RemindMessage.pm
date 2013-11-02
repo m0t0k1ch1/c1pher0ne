@@ -18,7 +18,8 @@ has _tweet_text => (
             awake  => '御意！__date__ になったらリマインドするね',
             asleep => '...もー！起こさないでよ！__date__ ね！はいはい！おやすみ！',
             error  => {
-                past => '過去には戻れないよ！現実を見て！',
+                future => '先を見過ぎだよ！今を生きよう！',
+                past   => '過去には戻れないよ！現実を見て！',
             },
         }
     },
@@ -62,6 +63,9 @@ sub response {
                 body        => $text_from,
                 remind_date => $remind_date,
             });
+        }
+        elsif ($remind_date->delta_days($now)->in_units('days' > 1000)) {
+            $text_to .= ' ' . $self->_tweet_text->{error}->{future};
         }
         else {
             $text_to .= ' ' . $self->_tweet_text->{error}->{past};
