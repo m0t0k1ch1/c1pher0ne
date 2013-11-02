@@ -60,6 +60,8 @@ sub response {
     my ($remind_date, $text_from) = $self->_get_remind_date($tweet);
     die 'invalid format' unless $remind_date;
 
+    warn $remind_date;
+
     my $screen_name_from = '@' . $tweet->{user}->{screen_name};
     my $screen_name_to   = '@' . $self->screen_name;
 
