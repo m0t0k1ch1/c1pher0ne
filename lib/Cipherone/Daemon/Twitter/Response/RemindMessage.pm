@@ -30,7 +30,7 @@ __PACKAGE__->meta->make_immutable;
 
 no Mouse;
 
-sub _get_remind_date {
+sub _get_remind_date_and_text {
     my ($self, $tweet) = @_;
 
     my $text_from = $tweet->{text};
@@ -58,7 +58,7 @@ sub response {
     my ($self, $tweet) = @_;
 
     my $status_id                 = $tweet->{id};
-    my ($remind_date, $text_from) = $self->_get_remind_date($tweet);
+    my ($remind_date, $text_from) = $self->_get_remind_date_and_text($tweet);
     die 'invalid format' unless $remind_date;
 
     my $screen_name_from = '@' . $tweet->{user}->{screen_name};
