@@ -53,7 +53,7 @@ sub streaming {
 
     my $cv = AE::cv;
 
-    warn 'Streaming start';
+    warn $self->schema->now . ': Streaming starts';
 
     my $stream = AnyEvent::Twitter::Stream->new(
         consumer_key    => $twitter_config->{consumer_key},
@@ -70,15 +70,14 @@ sub streaming {
         on_error => sub {
             my $message = shift;
 
-            warn "ERROR: ${message}";
+            warn $self->schema->now . ': ' . $message;
             $cv->send;
         },
     );
 
     $cv->recv;
 
-    my $now = $self->schema->now;
-    die "Die at ${now}";
+    die $self->schema->now . 'Die';
 }
 
 1;
