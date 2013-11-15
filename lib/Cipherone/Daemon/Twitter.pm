@@ -53,7 +53,7 @@ sub streaming {
 
     my $cv = AE::cv;
 
-    warn $self->schema->now . ': Streaming starts';
+    warn $self->schema->now . ': Ready to connect';
 
     my $stream = AnyEvent::Twitter::Stream->new(
         consumer_key    => $twitter_config->{consumer_key},
@@ -62,22 +62,29 @@ sub streaming {
         token_secret    => $twitter_config->{access_token_secret},
         method => 'filter',
         track  => '@' . $self->screen_name,
+        on_connecting => sub {
+            warn $self->schema->now . ': Connected';
+        },
+        on_keepalive => sub {
+            warn $self->schema->now . ': Keep alive'
+        },
         on_tweet => sub {
             my $tweet = shift;
-
             $self->response($tweet);
         },
         on_error => sub {
             my $message = shift;
-
             warn $self->schema->now . ': ' . $message;
+            $cv->send;
+        },
+        on_eof => sub {
             $cv->send;
         },
     );
 
     $cv->recv;
 
-    die $self->schema->now . 'Die';
+    die $self->schema->now . ': Die';
 }
 
 1;
