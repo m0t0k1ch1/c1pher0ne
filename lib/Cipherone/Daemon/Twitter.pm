@@ -62,7 +62,7 @@ sub streaming {
         token_secret    => $twitter_config->{access_token_secret},
         method => 'filter',
         track  => '@' . $self->screen_name,
-        on_connecting => sub {
+        on_connect => sub {
             warn $self->schema->now . ': Connected';
         },
         on_keepalive => sub {
