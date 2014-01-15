@@ -18,7 +18,8 @@ sub _build_twitter {
     my $self = shift;
 
     Net::Twitter->new(
-        traits => [qw/API::RESTv1_1/],
+        traits => ['API::RESTv1_1'],
+        apiurl => 'https://api.twitter.com/1.1',
         %{ $self->config('twitter') },
     );
 }
