@@ -8,7 +8,6 @@ with (
     'Cipherone::Role::Schema',
 );
 
-use Encode;
 use LWP::UserAgent;
 
 has _tweet_text => (
@@ -47,7 +46,7 @@ sub tweet {
     my $user_agent = LWP::UserAgent->new;
     my $res        = $user_agent->get($media_ranking_detail->image_url);
 
-    $self->twitter->update_with_media(encode('utf8', $text), [
+    $self->twitter->update_with_media($text, [
         undef,
         basename($media_ranking_detail->image_url),
         Content => $res->content,
