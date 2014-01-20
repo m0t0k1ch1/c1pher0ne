@@ -56,7 +56,7 @@ sub streaming {
     warn 'Ready to connect';
 
     my $stream = AnyEvent::Twitter::Stream->new(
-        api_url         => 'https://api.twitter.com/1.1',
+        api_url         => 'https://stream.twitter.com/1.1',
         consumer_key    => $twitter_config->{consumer_key},
         consumer_secret => $twitter_config->{consumer_secret},
         token           => $twitter_config->{access_token},
