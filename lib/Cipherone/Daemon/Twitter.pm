@@ -61,8 +61,7 @@ sub streaming {
         consumer_secret => $twitter_config->{consumer_secret},
         token           => $twitter_config->{access_token},
         token_secret    => $twitter_config->{access_token_secret},
-#        method => 'filter',
-        track  => '@' . $self->screen_name,
+        track           => '@' . $self->screen_name,
         on_connect => sub {
             warn 'Connected';
         },
