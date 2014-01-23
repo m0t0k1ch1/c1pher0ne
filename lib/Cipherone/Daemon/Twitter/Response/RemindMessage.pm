@@ -41,6 +41,15 @@ sub _get_remind_date_and_text {
         $text_from          =~ s/(?:${remind_date_string})//g;
         $remind_date = DateTime::Format::HTTP->parse_datetime($remind_date_string);
     }
+    elsif ($text_from =~ /\s(\d{1,2}(\/|-)\d{1,2} \d{1,2}:\d{1,2})$/) {
+        $remind_date_string = $1;
+        $text_from          =~ s/(?:${remind_date_string})//g;
+        my $now = $self->schema->now;
+        $remind_date = DateTime::Format::HTTP->parse_datetime($now->year . '-' . $remind_date_string);
+        if ($remind_date < $now) {
+            $remind_date->add(years => 1);
+        }
+    }
     elsif ($text_from =~ /\s(\d{1,2}:\d{1,2})$/) {
         $remind_date_string = $1;
         $text_from          =~ s/(?:${remind_date_string})//g;
