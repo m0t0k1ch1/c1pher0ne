@@ -56,11 +56,11 @@ sub track_mentions {
     warn 'Ready to connect';
 
     my $stream = AnyEvent::Twitter::Stream->new(
-        api_url         => 'https://stream.twitter.com/1.1/statuses/filter.json',
         consumer_key    => $twitter_config->{consumer_key},
         consumer_secret => $twitter_config->{consumer_secret},
         token           => $twitter_config->{access_token},
         token_secret    => $twitter_config->{access_token_secret},
+        method          => 'filter',
         track           => '@' . $self->screen_name,
         on_connect => sub {
             warn 'Connected';
