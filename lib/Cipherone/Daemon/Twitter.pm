@@ -66,7 +66,7 @@ sub track_mentions {
             warn 'Connected';
         },
         on_keepalive => sub {
-            warn 'Keep alive'
+            warn 'Keep alive';
         },
         on_tweet => sub {
             my $tweet = shift;
