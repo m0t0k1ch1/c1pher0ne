@@ -46,7 +46,7 @@ sub response {
     }
 }
 
-sub streaming {
+sub track_mentions {
     my $self = shift;
 
     my $twitter_config = $self->config('twitter');

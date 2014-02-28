@@ -6,4 +6,4 @@ use FindBin::libs;
 use Cipherone;
 
 my $cipherone = Cipherone->new;
-$cipherone->daemon('Twitter')->streaming;
+$cipherone->daemon('Twitter')->track_mentions;
