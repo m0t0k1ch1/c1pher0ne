@@ -1,6 +1,7 @@
 package Cipherone::Daemon::Twitter;
 use Mouse;
 use utf8;
+use feature 'say';
 
 extends 'Cipherone::Daemon';
 with (
@@ -53,7 +54,7 @@ sub track_mentions {
 
     my $cv = AE::cv;
 
-    warn 'Ready to connect';
+    say 'Ready to connect';
 
     my $stream = AnyEvent::Twitter::Stream->new(
         consumer_key    => $twitter_config->{consumer_key},
@@ -63,10 +64,10 @@ sub track_mentions {
         method          => 'filter',
         track           => '@' . $self->screen_name,
         on_connect => sub {
-            warn 'Connected';
+            say 'Connected';
         },
         on_keepalive => sub {
-            warn 'Keep alive';
+            say 'Keep alive';
         },
         on_tweet => sub {
             my $tweet = shift;
@@ -74,7 +75,7 @@ sub track_mentions {
         },
         on_error => sub {
             my $message = shift;
-            warn $message;
+            say $message;
             $cv->send;
         },
         on_eof => sub {
@@ -84,7 +85,7 @@ sub track_mentions {
 
     $cv->recv;
 
-    die 'Die';
+    say 'Die';
 }
 
 1;
