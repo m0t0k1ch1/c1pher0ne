@@ -5,5 +5,7 @@ use FindBin::libs;
 
 use Cipherone;
 
+local $| = 1;
+
 my $cipherone = Cipherone->new;
 $cipherone->daemon('Twitter')->track_mentions;
