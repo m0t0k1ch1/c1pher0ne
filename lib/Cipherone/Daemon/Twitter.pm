@@ -85,7 +85,7 @@ sub track_mentions {
 
     $cv->recv;
 
-    say 'Die';
+    die 'Die';
 }
 
 1;
