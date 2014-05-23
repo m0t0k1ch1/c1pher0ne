@@ -13,6 +13,7 @@ use AnyEvent::Twitter::Stream;
 use DateTime;
 use File::Basename;
 use JSON;
+use Try::Tiny;
 
 my $response_name_base = 'Cipherone::Daemon::Twitter::Response';
 
