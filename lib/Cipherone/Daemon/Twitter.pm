@@ -12,6 +12,7 @@ with (
 use AnyEvent::Twitter::Stream;
 use DateTime;
 use File::Basename;
+use JSON;
 
 my $response_name_base = 'Cipherone::Daemon::Twitter::Response';
 
@@ -21,6 +22,11 @@ for my $file (@files) {
     my $response_name      = "${response_name_base}::${response_name_tail}";
     eval "use ${response_name}";
 }
+
+has json_str => (
+    is      => 'rw',
+    defalut => '',
+);
 
 __PACKAGE__->meta->make_immutable;
 
@@ -63,6 +69,7 @@ sub track_mentions {
         token_secret    => $twitter_config->{access_token_secret},
         method          => 'filter',
         track           => '@' . $self->screen_name,
+        no_decode_json  => 1,
         on_connect => sub {
             say 'Connected';
         },
@@ -70,8 +77,20 @@ sub track_mentions {
             say 'Keep alive';
         },
         on_tweet => sub {
-            my $tweet = shift;
-            $self->response($tweet);
+            my $tweet_str = shift;
+            $self->json_str .= $tweet_str;
+            if (substr($tweet_str, -1) eq "\n") {
+                my $tweet;
+                try {
+                    $tweet = JSON::decode_json($self->json_str);
+                } catch {
+                    say "Can't decode";
+                };
+                if ($tweet) {
+                    $self->response($tweet);
+                }
+                $self->json_str = '';
+            }
         },
         on_error => sub {
             my $message = shift;
