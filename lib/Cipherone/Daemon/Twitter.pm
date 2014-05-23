@@ -23,11 +23,6 @@ for my $file (@files) {
     eval "use ${response_name}";
 }
 
-has json_str => (
-    is      => 'rw',
-    defalut => '',
-);
-
 __PACKAGE__->meta->make_immutable;
 
 no Mouse;
@@ -57,6 +52,7 @@ sub track_mentions {
     my $self = shift;
 
     my $twitter_config = $self->config('twitter');
+    my $json_str       = '';
 
     my $cv = AE::cv;
 
@@ -78,18 +74,18 @@ sub track_mentions {
         },
         on_tweet => sub {
             my $tweet_str = shift;
-            $self->json_str .= $tweet_str;
+            $json_str .= $tweet_str;
             if (substr($tweet_str, -1) eq "\n") {
                 my $tweet;
                 try {
-                    $tweet = JSON::decode_json($self->json_str);
+                    $tweet = JSON::decode_json($json_str);
                 } catch {
                     say "Can't decode";
                 };
                 if ($tweet) {
                     $self->response($tweet);
                 }
-                $self->json_str = '';
+                $json_str = '';
             }
         },
         on_error => sub {
